@@ -1,0 +1,14 @@
+E;Retiro; Av. Dr. José María Ramos Mejía; 1430; CABA; C1104; 9; 6
+E;Córdoba;Boulevard Juan Domingo Perón 101;Córdoba;5000;6;4
+E;Mar del Plata;San Juan 1642;Mar del Plata;7600;5;4
+L;Mitre;Retiro;Campana;Zárate;Baradero
+L;Roca;Plaza Constitución;Haedo;Cañuelas
+R;Retiro;Campana;80
+R;Zárate;Baradero;74
+R;Zárate;Campana;80
+R;Córdoba;Rosario;400
+R;Plaza Constitución;Haedo;23
+R;Haedo;Cañuelas;65
+T;234;diesel;5;6;Mitre
+T;6789;eléctrico;10;1;Roca
+T;893;gasolina;0;11;no-asignado
