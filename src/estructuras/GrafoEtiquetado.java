@@ -351,13 +351,16 @@ public class GrafoEtiquetado {
 
         if (auxOrig != null && auxDest != null){ //si ambos fueron encontrados, busco un camino
             Lista visitados = new Lista(), camActual = new Lista();
-            camMin = caminoMenosPesoAux(auxOrig, destino, 0, 0, camMin, camActual, visitados);
+            int[] pesoMenor = new int[1];
+            pesoMenor[0] = 0; //creo un arreglo para tener referencia del peso del camino
+            camMin = caminoMenosPesoAux(auxOrig, destino, 0, pesoMenor, camActual, camMin, visitados);
 
         }
         return camMin;
     }
 
-    private Lista caminoMenosPesoAux(NodoVert n, Object destino, int pesoAux, int pesoMenor, Lista camMin, Lista camActual, Lista visitados){
+    private Lista caminoMenosPesoAux(NodoVert n, Object destino, int pesoAux, int[] pesoMenor, Lista camMin, Lista camActual, Lista visitados){
+        
         if (n != null){
             Object elem = n.getElem();
 
@@ -365,8 +368,10 @@ public class GrafoEtiquetado {
             camActual.insertar(elem, camActual.longitud()+1);
 
             if (elem.equals(destino)){ //si llego al destino
-                if (pesoMenor == 0 || pesoAux < pesoMenor){ //si encontró un camino menor peso, lo cambio
-                    camMin = camActual.clone(); //retorno un clon para no modificar la referencia
+                int peso = pesoMenor[0]; //peso del camMin
+                if (peso == 0  || peso > pesoAux){ //si encontró un camino de menor peso, lo cambio
+                    pesoMenor[0] = pesoAux;
+                    camMin = camActual.clone();
                 }
                 
             } else {
@@ -374,7 +379,8 @@ public class GrafoEtiquetado {
 
                 while (ady != null){ //paso recursivo con sus adyacentes 
                     if (visitados.localizar(ady.getVertice().getElem()) < 0){
-                        camMin = caminoMenosPesoAux(ady.getVertice(), destino, pesoAux + ady.getEtiqueta(), pesoMenor, camMin, camActual, visitados);
+                        int nuevo = pesoAux + ady.getEtiqueta(); //sumo el peso del arco
+                        camMin = caminoMenosPesoAux(ady.getVertice(), destino, nuevo, pesoMenor, camMin, camActual, visitados);
                     }
                     ady = ady.getSigAdyacente();
                 }

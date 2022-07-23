@@ -88,12 +88,12 @@ public class Diccionario {
         return flag;
     }
 
-    public boolean eliminar(Comparable clave, Object dato){
+    public boolean eliminar(Comparable clave){
         //Recibe el elemento que se desea eliminar y se procede a removerlo del árbol
-        return eliminarAux(this.raiz, clave, dato, null);
+        return eliminarAux(this.raiz, clave, null);
     }
  
-    private boolean eliminarAux(NodoAVLDicc n, Comparable elem, Object dato, NodoAVLDicc padre){
+    private boolean eliminarAux(NodoAVLDicc n, Comparable elem, NodoAVLDicc padre){
         //elimina un elemento del arbol conservando el orden y balance del mismo
         boolean flag = false;
 
@@ -112,7 +112,7 @@ public class Diccionario {
                     NodoAVLDicc candidato = menorEnSubarbolDer(der); //busco candidato a reemplazar a su padre
                     Comparable claveCand = candidato.getClave();
                     Object datoCand = candidato.getDato();
-                    eliminarAux(der, claveCand, datoCand, n); //elimino candidato 
+                    eliminarAux(der, claveCand, n); //elimino candidato 
 
                     //reemplazo nodo actual con los datos de candidato
                     n.setClave(claveCand); 
@@ -126,9 +126,9 @@ public class Diccionario {
                 }
 
             } else if (elem.compareTo(aux) < 0) { //si es menor busco a la izq
-                flag = eliminarAux(n.getIzquierdo(), elem, dato, n);
+                flag = eliminarAux(n.getIzquierdo(), elem, n);
             } else { //si es mayor busco a la der
-                flag = eliminarAux(n.getDerecho(), elem, dato, n);  
+                flag = eliminarAux(n.getDerecho(), elem, n);  
             }
 
             if (flag){ //si se logro eliminar verifico balance de nodo actual
@@ -291,6 +291,7 @@ public class Diccionario {
         if (n != null){
             if (elem.compareTo(n.getClave()) == 0){ //si es igual encontramos elem
                 flag = true;
+
             } else if (elem.compareTo(n.getClave()) < 0) { //Si elem es menor a la raiz busco en subArbol izq
                 flag = existeClaveAux(n.getIzquierdo(), elem);
             } else { //Si elem es mayor a la raiz busco en subArbol der
@@ -359,6 +360,7 @@ public class Diccionario {
             ls.insertar(n.getDato(), 1);
             listarClavesAux(n.getIzquierdo(), ls);
         }
+        
     }
 
     public String toString(){
@@ -377,8 +379,8 @@ public class Diccionario {
         String cad = "";
 
         if (n != null){
-            //cad = cad +"("+ n.getElem() + ") Alt:"+n.getAltura()+" ->  "; 
-            cad = cad +"("+ n.getClave() + ") ->  ";
+            cad = cad +"("+ n.getClave() + ") Alt:"+n.getAltura()+" ->  "; 
+            //cad = cad +"("+ n.getClave() + ") ->  ";
             NodoAVLDicc izq, der;
             izq = n.getIzquierdo(); 
             der = n.getDerecho();
