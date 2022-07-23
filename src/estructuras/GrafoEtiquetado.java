@@ -17,21 +17,6 @@ public class GrafoEtiquetado {
             this.inicio = new NodoVert(elem, this.inicio, null);
         } 
         
-        /*NodoVert aux = this.inicio; //para moverme por los vertices
-
-        while (flag && aux != null){
-            if (aux.getElem().equals(elem)){ //esta repetido
-                flag = false;
-            } else {
-                aux = aux.getSigVertice();
-            }
-        }
-        if (flag){ //si no esta repetido
-            NodoVert nuevo = new NodoVert(elem, this.inicio, null);
-            this.inicio = nuevo;
-        }
-        */
-        
         return flag;
     }
 
@@ -346,7 +331,60 @@ public class GrafoEtiquetado {
         return camMax;
     }
 
-    
+    public Lista caminoMenosPeso(Object origen, Object destino){
+        Lista camMin = new Lista();
+
+        NodoVert aux, auxOrig, auxDest;
+        aux = this.inicio; 
+        auxOrig = null;
+        auxDest = null;
+
+        while (aux != null && (auxOrig == null || auxDest == null)){ //busco a los 2 nodos
+            if (aux.getElem().equals(origen)){
+                auxOrig = aux;
+            } 
+            if (aux.getElem().equals(destino)){
+                auxDest = aux;
+            }
+            aux = aux.getSigVertice();
+        }
+
+        if (auxOrig != null && auxDest != null){ //si ambos fueron encontrados, busco un camino
+            Lista visitados = new Lista(), camActual = new Lista();
+            camMin = caminoMenosPesoAux(auxOrig, destino, 0, 0, camMin, camActual, visitados);
+
+        }
+        return camMin;
+    }
+
+    private Lista caminoMenosPesoAux(NodoVert n, Object destino, int pesoAux, int pesoMenor, Lista camMin, Lista camActual, Lista visitados){
+        if (n != null){
+            Object elem = n.getElem();
+
+            visitados.insertar(elem, visitados.longitud()+1); //lo pongo en visitados
+            camActual.insertar(elem, camActual.longitud()+1);
+
+            if (elem.equals(destino)){ //si llego al destino
+                if (pesoMenor == 0 || pesoAux < pesoMenor){ //si encontró un camino menor peso, lo cambio
+                    camMin = camActual.clone(); //retorno un clon para no modificar la referencia
+                }
+                
+            } else {
+                NodoAdy ady = n.getPrimerAdy();
+
+                while (ady != null){ //paso recursivo con sus adyacentes 
+                    if (visitados.localizar(ady.getVertice().getElem()) < 0){
+                        camMin = caminoMenosPesoAux(ady.getVertice(), destino, pesoAux + ady.getEtiqueta(), pesoMenor, camMin, camActual, visitados);
+                    }
+                    ady = ady.getSigAdyacente();
+                }
+            }
+            camActual.eliminar(camActual.longitud()); //ya lo visite, lo elimino del camino
+            visitados.eliminar(visitados.longitud()); //lo saco de visitados ya que puede haber mas caminos que visiten este nodo
+        }
+
+        return camMin;
+    }
 
     public Lista listarEnProfundidad(){
         Lista visitados = new Lista();

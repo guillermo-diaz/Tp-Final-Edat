@@ -125,7 +125,15 @@ public class TrenesSA {
     }
 
     public static void eliminarTren(Diccionario trenes, HashMap mapeo){
-
+        if (trenes.esVacio()){
+            System.out.println("No existen trenes que eliminar");
+        } else {
+            System.out.println("Ingrese el nombre del tren que quiere eliminar");
+            String nombre = TecladoIn.readLine();
+            if (trenes.existeClave(nombre)){
+                
+            }
+        }
     }
 
     public static void agregarTren(Diccionario trenes, HashMap mapeo){
