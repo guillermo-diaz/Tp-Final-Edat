@@ -61,7 +61,11 @@ public class TrenesSA {
         System.out.println("-------------------------");
         System.out.println("Dicc Trenes: "+trenes.toString());
         System.out.println("-------------------------");
-        System.out.println("mapeo: "+mapeo.keySet());
+        System.out.println("mapeo: "+mapeo.toString());
+        
+        mapeo.remove("Linea 1", (Estacion) estaciones.obtenerInformacion("Retiro"));
+        mapeo.remove("Linea 1", (Estacion) estaciones.obtenerInformacion("Cordoba"));
+        System.out.println("mapeo2: "+mapeo.toString());
         
         
     }
@@ -112,7 +116,7 @@ public class TrenesSA {
                     eliminarTren(trenes, mapeo);
                     break;
                 case 3: 
-
+                    modificarTren(trenes, mapeo);
                     break;
                 case 4: 
                     System.out.println("Saliendo de ABM trenes...");
@@ -124,6 +128,55 @@ public class TrenesSA {
         } while (opcion != 4);
     }
 
+    public static void modificarTren(Diccionario trenes, HashMap mapeo){
+        if (!trenes.esVacio()){
+            System.out.println("Ingrese el nombre del tren que va a modificar");
+            String nombre = TecladoIn.readLine();
+            if (trenes.existeClave(nombre)){
+                    Tren tren = (Tren) trenes.obtenerInformacion(nombre);
+                    System.out.println("Operaciones: ");
+                    System.out.println("1- Cambiar el tipo Propulsion:");
+                    System.out.println("2- Cambiar la cantidad de vagones pasajeros");
+                    System.out.println("3- Cambiar la cantidad de vagones de carga");
+                    System.out.println("4- Cambiar la linea del tren");
+                    System.out.println("5- volver");
+                    System.out.println("--------------------------------------------");
+                    System.out.println("Ingrese una opcion:");
+                    int opcion = TecladoIn.readInt();
+                    switch (opcion){
+                        case 1:
+                            String propulsion = pedirTipoPropulsion();
+                            tren.setCombustible(propulsion);
+                            break;
+                        case 2: 
+                            int cantVagonesPasajeros = pedirVagonesPasajeros();
+                            tren.setCantVagonesPasajeros(cantVagonesPasajeros);
+                            break;
+                        case 3: 
+                            int cantVagonesCarga = pedirVagonesCarga();
+                            tren.setCantVagonesCarga(cantVagonesCarga);
+                            break;
+                        case 4:
+                            String linea = pedirLinea(mapeo);
+                            tren.setLinea(linea);
+                            break;
+                        case 5:
+                            System.out.println("Volviendo");
+                            break;
+                        default: 
+                            System.out.println("Opcion incorrecta");
+                            break;
+                    }
+            } else {
+                System.out.println("El tren ingresado no existe");
+            } 
+        } else {
+            System.out.println("No hay trenes disponibles para modificar");
+        }
+             
+        
+    }
+
     public static void eliminarTren(Diccionario trenes, HashMap mapeo){
         if (trenes.esVacio()){
             System.out.println("No existen trenes que eliminar");
@@ -131,7 +184,9 @@ public class TrenesSA {
             System.out.println("Ingrese el nombre del tren que quiere eliminar");
             String nombre = TecladoIn.readLine();
             if (trenes.existeClave(nombre)){
-                
+                trenes.eliminar(nombre);
+            } else {
+                System.out.println("El tren que seleccionó no existe");
             }
         }
     }
@@ -251,7 +306,7 @@ public class TrenesSA {
         return propulsion;
     }
 
-    public static void ABMEstaciones(Diccionario estaciones, GrafoEtiquetado mapa){
+    public static void ABMEstaciones(Diccionario estaciones, GrafoEtiquetado mapa, HashMap mapeo){
         int opcion;
         do {
             System.out.println("---------------------------- ABM Estaciones ----------------------------");
@@ -260,10 +315,10 @@ public class TrenesSA {
 
             switch(opcion){
                 case 1:  
-                    
+                    agregarEstacion(estaciones, mapa);
                     break;
                 case 2: 
-
+                    
                     break;
                 case 3: 
 
@@ -276,6 +331,151 @@ public class TrenesSA {
                     break;
             }
         } while (opcion != 4);
+    }
+
+    public static void eliminarEstacion(Diccionario estaciones, GrafoEtiquetado mapa){
+        if (estaciones.esVacio()){
+            System.out.println("No hay estaciones para eliminar");
+        } else {
+            System.out.println("Ingrese el nombre de la estacion que va a eliminar");
+            String nombre = TecladoIn.readLine();
+            if (estaciones.existeClave(nombre)){
+                
+            } else {
+                System.out.println("Dicha estacion no existe");
+            }
+            
+        }
+    }
+
+    public static void agregarEstacion(Diccionario estaciones, GrafoEtiquetado mapa){
+        String nombre = pedirNombreEstacion(estaciones);
+        String calle = pedirCalle();
+        int num = pedirNumeroEstacion();
+        String ciu = pedirCiudad();
+        String cp = pedirCP();
+        int cantV = pedirCantVias();
+        int cantPlataf = pedirCantPlataf();
+        
+        Estacion nuevaEstacion = new Estacion(nombre, calle, num, ciu, cp, cantV, cantPlataf);
+        estaciones.insertar(nombre, nuevaEstacion);
+        mapa.insertarVertice(nombre);
+    }
+
+    public static int pedirCantPlataf(){
+        int cantPlataf;
+        boolean flag = false;
+
+        do{
+            System.out.println("Ingrese la cantidad de plataformas");
+            cantPlataf = TecladoIn.readInt();
+            if (cantPlataf < 0){
+                System.out.println("Error cantidad no valida");
+            } else {
+                flag = true;
+            }
+        } while (!flag);
+        return cantPlataf;
+    }
+
+    public static int pedirCantVias(){
+        int cantVias;
+        boolean flag = false;
+
+        do{
+            System.out.println("Ingrese la cantidad de vias");
+            cantVias = TecladoIn.readInt();
+            if (cantVias < 0){
+                System.out.println("Error cantidad no valida");
+            } else {
+                flag = true;
+            }
+        } while (!flag);
+        return cantVias;
+    }
+
+    public static int pedirNumeroEstacion(){
+        int num;
+        boolean flag = false;
+
+        do{
+            System.out.println("Ingrese el numero de la estacion");
+            num = TecladoIn.readInt();
+            if (num < 0){
+                System.out.println("Error numero no valido");
+            } else {
+                flag = true;
+            }
+        } while (!flag);
+        return num;
+    }
+
+    public static String pedirCalle(){
+        String calle;
+        boolean flag = false;
+
+        do{
+            System.out.println("Ingrese una calle");
+            calle = TecladoIn.readLine();
+            if (calle.isEmpty()){
+                System.out.println("Error calle vacia");
+            } else {
+                flag = true;
+            }
+        } while (!flag);
+        return calle;
+    }
+
+    public static String pedirCiudad(){
+        String ciudad;
+        boolean flag = false;
+
+        do{
+            System.out.println("Ingrese una ciudad");
+            ciudad = TecladoIn.readLine();
+            if (ciudad.isEmpty()){
+                System.out.println("Error ciudad vacia");
+            } else {
+                flag = true;
+            }
+        } while (!flag);
+        return ciudad;
+    }
+
+    public static String pedirCP(){
+        String cp;
+        boolean flag = false;
+
+        do{
+            System.out.println("Ingrese un codigo postal");
+            cp = TecladoIn.readLine();
+            if (cp.isEmpty()){
+                System.out.println("Error codigo postal vacio");
+            } else {
+                flag = true;
+            }
+        } while (!flag);
+        return cp;
+    }
+    
+
+
+    public static String pedirNombreEstacion(Diccionario estaciones){
+        String nombre;
+        boolean flag = false;
+
+        do {
+            System.out.println("Ingrese el nombre de la estacion");
+            nombre = TecladoIn.readLine();
+            if (estaciones.existeClave(nombre)){
+                System.out.println("Dicho nombre ya existe, ingrese otro");
+            } else if (nombre.isEmpty()){
+                System.out.println("ERROR nombre vacio");
+            } else{
+                flag = true;
+            }
+        } while (!flag);
+        return nombre;
     }
 
     public static void ABMLineas(Diccionario trenes, HashMap lineas){
