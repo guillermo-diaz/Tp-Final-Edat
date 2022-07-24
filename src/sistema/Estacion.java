@@ -56,6 +56,10 @@ public class Estacion implements Comparable{
         ", CantVias: "+cantVias+", cantPlataformas: "+cantPlataformas;
     }
 
+    public boolean equals(Estacion otro){
+        return NOMBRE.equals(otro.NOMBRE);
+    }
+    
     @Override
     public int compareTo(Object o) {
 
