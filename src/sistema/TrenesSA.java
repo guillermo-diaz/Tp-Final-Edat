@@ -1,8 +1,6 @@
 package sistema;
-
 import estructuras.*;
 import java.io.*;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -305,7 +303,7 @@ public class TrenesSA {
         return propulsion;
     }
 
-    public static void ABMEstaciones(Diccionario estaciones, GrafoEtiquetado mapa, HashMap<String, Lista> mapeo){
+    public static void ABMEstaciones(Diccionario estaciones, GrafoEtiquetado mapa){
         int opcion;
         do {
             System.out.println("---------------------------- ABM Estaciones ----------------------------");
@@ -317,7 +315,7 @@ public class TrenesSA {
                     agregarEstacion(estaciones, mapa);
                     break;
                 case 2: 
-                    
+                    eliminarEstacion(estaciones, mapa);
                     break;
                 case 3: 
 
@@ -332,6 +330,20 @@ public class TrenesSA {
         } while (opcion != 4);
     }
 
+    public static void modificarEstacion(Diccionario estaciones, GrafoEtiquetado mapa){
+        if (!estaciones.esVacio()){
+            System.out.println("Ingrese el nombre de la estacion que va a modificar:");
+            String nombre = TecladoIn.readLine();
+            if (estaciones.existeClave(nombre)){
+
+            } else {
+                System.out.println("La estacion ingresada no existe");
+            }
+        } else {
+            System.out.println("No existen estaciones disponibles para modificar");
+        }
+    }
+
     public static void eliminarEstacion(Diccionario estaciones, GrafoEtiquetado mapa){
         if (estaciones.esVacio()){
             System.out.println("No hay estaciones para eliminar");
@@ -339,7 +351,8 @@ public class TrenesSA {
             System.out.println("Ingrese el nombre de la estacion que va a eliminar");
             String nombre = TecladoIn.readLine();
             if (estaciones.existeClave(nombre)){
-                
+                estaciones.eliminar(nombre);
+                mapa.eliminarVertice(mapa);
             } else {
                 System.out.println("Dicha estacion no existe");
             }
@@ -593,11 +606,13 @@ public class TrenesSA {
                             listaEstaciones.insertar(estacion, 1);
                         }   
                     }
-                    mapeo.put(nombreLinea, listaEstaciones);
-                }
 
-                
-                
+                    if (!listaEstaciones.esVacia()){ 
+                        mapeo.put(nombreLinea, listaEstaciones);
+                    } else { //si una linea no tiene estaciones, entonces no deberia existir
+                        listaEstaciones = null;
+                    }
+                }  
                 break;
             case "R": 
                 String est1 = parte.nextToken();
