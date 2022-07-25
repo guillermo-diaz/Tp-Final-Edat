@@ -309,17 +309,19 @@ public class Diccionario {
         return obtenerInformacionAux(this.raiz, clave);
     }
 
-    public Object obtenerInformacionAux(NodoAVLDicc n, Comparable elem){
+    private Object obtenerInformacionAux(NodoAVLDicc n, Comparable elem){
         //metodo aux que verifica si un elemento esta en el arbol
         Object ret;
 
         if (n != null){
             if (elem.compareTo(n.getClave()) == 0){ //si es igual encontramos elem
+                
                 ret = n.getDato();
+                System.out.println("elem "+n.getDato());
             } else if (elem.compareTo(n.getClave()) < 0) { //Si elem es menor a la raiz busco en subArbol izq
-                ret = existeClaveAux(n.getIzquierdo(), elem);
+                ret = obtenerInformacionAux(n.getIzquierdo(), elem);
             } else { //Si elem es mayor a la raiz busco en subArbol der
-                ret = existeClaveAux(n.getDerecho(), elem);
+                ret = obtenerInformacionAux(n.getDerecho(), elem);
                 
             }
         } else {

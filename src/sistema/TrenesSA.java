@@ -2,8 +2,10 @@ package sistema;
 
 import estructuras.*;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
+
 
 import util.TecladoIn;
 import java.util.StringTokenizer;
@@ -13,9 +15,8 @@ public class TrenesSA {
         GrafoEtiquetado mapa = new GrafoEtiquetado();
         Diccionario estaciones = new Diccionario();
         Diccionario trenes = new Diccionario();
-        HashMap<String, Estacion> mapeo = new HashMap<String, Estacion>();
+        HashMap<String, Lista> mapeo = new HashMap<String, Lista>(); //mapeo de lineas con lista de estaciones
         int opcion;
-
        
         do {
 			opcion = menu();
@@ -57,15 +58,13 @@ public class TrenesSA {
 		}while(opcion != 10);
         System.out.println("Grafo: \n"+ mapa.toString());
         System.out.println("-----------------------");
-        System.out.println("Dicc Estaciones: "+estaciones.toString());
+        System.out.println("Dicc Estaciones: \n"+estaciones.toString());
         System.out.println("-------------------------");
-        System.out.println("Dicc Trenes: "+trenes.toString());
+        System.out.println("Dicc Trenes: \n"+trenes.toString());
         System.out.println("-------------------------");
-        System.out.println("mapeo: "+mapeo.toString());
+  
+        System.out.println("mapeo "+mapeo.get("Linea 2"));
         
-        mapeo.remove("Linea 1", (Estacion) estaciones.obtenerInformacion("Retiro"));
-        mapeo.remove("Linea 1", (Estacion) estaciones.obtenerInformacion("Cordoba"));
-        System.out.println("mapeo2: "+mapeo.toString());
         
         
     }
@@ -101,7 +100,7 @@ public class TrenesSA {
         return opcion;
     }
 
-    public static void ABMTrenes(Diccionario trenes, HashMap mapeo){
+    public static void ABMTrenes(Diccionario trenes, HashMap<String, Lista> mapeo){
         int opcion;
         do {
             System.out.println("---------------------------- ABM TRENES ----------------------------");
@@ -128,7 +127,7 @@ public class TrenesSA {
         } while (opcion != 4);
     }
 
-    public static void modificarTren(Diccionario trenes, HashMap mapeo){
+    public static void modificarTren(Diccionario trenes, HashMap<String, Lista> mapeo){
         if (!trenes.esVacio()){
             System.out.println("Ingrese el nombre del tren que va a modificar");
             String nombre = TecladoIn.readLine();
@@ -177,7 +176,7 @@ public class TrenesSA {
         
     }
 
-    public static void eliminarTren(Diccionario trenes, HashMap mapeo){
+    public static void eliminarTren(Diccionario trenes, HashMap<String, Lista> mapeo){
         if (trenes.esVacio()){
             System.out.println("No existen trenes que eliminar");
         } else {
@@ -191,7 +190,7 @@ public class TrenesSA {
         }
     }
 
-    public static void agregarTren(Diccionario trenes, HashMap mapeo){
+    public static void agregarTren(Diccionario trenes, HashMap<String, Lista> mapeo){
         int id = pedirId(trenes);
         String tipoPropulsion = pedirTipoPropulsion();
         int cantVagonesPasajeros = pedirVagonesPasajeros();
@@ -202,7 +201,7 @@ public class TrenesSA {
         trenes.insertar(id, tren);
     }
 
-    public static String pedirLinea(HashMap mapeo){
+    public static String pedirLinea(HashMap<String, Lista> mapeo){
         String linea = "";
         boolean flag = false;    
 
@@ -306,7 +305,7 @@ public class TrenesSA {
         return propulsion;
     }
 
-    public static void ABMEstaciones(Diccionario estaciones, GrafoEtiquetado mapa, HashMap mapeo){
+    public static void ABMEstaciones(Diccionario estaciones, GrafoEtiquetado mapa, HashMap<String, Lista> mapeo){
         int opcion;
         do {
             System.out.println("---------------------------- ABM Estaciones ----------------------------");
@@ -478,7 +477,7 @@ public class TrenesSA {
         return nombre;
     }
 
-    public static void ABMLineas(Diccionario trenes, HashMap lineas){
+    public static void ABMLineas(Diccionario trenes, HashMap<String, Lista> lineas){
         int opcion;
         do {
             System.out.println("---------------------------- ABM Lineas ----------------------------");
@@ -530,7 +529,7 @@ public class TrenesSA {
         } while (opcion != 4);
     }
 
-    public static void cargarDatos(GrafoEtiquetado mapa, Diccionario estaciones, Diccionario trenes, HashMap lineas){
+    public static void cargarDatos(GrafoEtiquetado mapa, Diccionario estaciones, Diccionario trenes, HashMap<String, Lista> lineas){
 
         try {
             BufferedReader archivo = new BufferedReader(new FileReader("src\\datos.txt"));
@@ -551,7 +550,7 @@ public class TrenesSA {
         
     }
 
-    public static void analizarLinea(String linea, GrafoEtiquetado grafoMapa, Diccionario estaciones, Diccionario trenes, HashMap mapeo){
+    public static void analizarLinea(String linea, GrafoEtiquetado grafoMapa, Diccionario estaciones, Diccionario trenes, HashMap<String, Lista> mapeo){
         StringTokenizer parte = new StringTokenizer(linea, ";");
 
         switch (parte.nextToken()){
@@ -583,12 +582,22 @@ public class TrenesSA {
                 //Formato de Linea: (nombre de la línea; y nombre de las estaciones por las que pasa)
                 String nombreLinea = parte.nextToken();
                 
-                while (parte.hasMoreTokens()){ //mientras tenga estaciones relacionadas
-                    String aux = parte.nextToken();
-                    if (estaciones.existeClave(aux)){ //si la estacion existe
-                        mapeo.put(nombreLinea, aux); 
-                    }   
+                
+                if (!mapeo.containsKey(nombreLinea)){ //si la linea no existe
+                    Lista listaEstaciones = new Lista();
+                    
+                    while (parte.hasMoreTokens()){ //mientras tenga estaciones relacionadas
+                        String aux = parte.nextToken();
+                        if (estaciones.existeClave(aux)){ //si la estacion existe
+                            Estacion estacion =  (Estacion) estaciones.obtenerInformacion(aux);
+                            listaEstaciones.insertar(estacion, 1);
+                        }   
+                    }
+                    mapeo.put(nombreLinea, listaEstaciones);
                 }
+
+                
+                
                 break;
             case "R": 
                 String est1 = parte.nextToken();
@@ -597,6 +606,7 @@ public class TrenesSA {
                 grafoMapa.insertarArco(est1, est2, etiqueta);
                 break;
         }
+        
     }
 
     

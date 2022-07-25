@@ -32,7 +32,7 @@ public class NodoAVLDicc{
     }
 
     public Object getDato() {
-        return dato;
+        return this.dato;
     }
 
     public void setDato(Object dato) {

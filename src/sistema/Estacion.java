@@ -51,9 +51,13 @@ public class Estacion implements Comparable{
         this.cantPlataformas = cantPlataformas;
     }
 
-    public String toString() {
+    /*public String toString() {
         return "Estacion: '"+NOMBRE+"', Direccion: " +calle+ ", " +numero+", "+ciudad+", CP: "+codigoPostal+
         ", CantVias: "+cantVias+", cantPlataformas: "+cantPlataformas;
+    } */
+
+    public String toString(){
+        return "Estacion: "+ NOMBRE;
     }
 
     public boolean equals(Estacion otro){
