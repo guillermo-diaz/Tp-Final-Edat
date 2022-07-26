@@ -753,11 +753,6 @@ public class TrenesSA {
             System.out.println("Operaciones Sobre Rieles:");
             opcion = opcionesAbm();
 
-            
-            
-            
-            
-
             switch(opcion){
                 case 1:  
                     System.out.println(VERDE+"AGREGAR RIEL\n"+RESET);
@@ -847,6 +842,33 @@ public class TrenesSA {
                     break;
             }
         } while (opcion != 3);
+    }
+
+    public static void consultaLineaYCiudades(Diccionario trenes, HashMap<String, Lista> lineas){
+        if (trenes.esVacio()){
+            System.out.println("No hay trenes disponibles para dicha consulta");
+        } else {
+            System.out.println("Ingrese el codigo del tren");
+            int id = TecladoIn.readInt();
+            if (trenes.existeClave(id)){
+                Tren tren = (Tren) trenes.obtenerInformacion(id);
+                String lineaTren = tren.getLinea();
+                System.out.println("El tren "+id+" esta asignado a la linea: "+lineaTren);
+                if (!lineaTren.equals("LIBRE")){
+                    System.out.println("Lista de ciudades que recorre: ");
+                    Lista listaEstaciones = lineas.get(lineaTren);
+                    int i , tam = listaEstaciones.longitud();
+
+                    for (i = 1; i <= tam; i++){
+                        Estacion est = (Estacion) listaEstaciones.recuperar(i);
+                        System.out.println("- "+est.getCiudad());
+                    }
+                    
+                }
+            } else {
+                System.out.println("Error: el tren no existe");
+            }
+        }
     }
 
     public static void mostrarInfoTren(Diccionario trenes){
