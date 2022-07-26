@@ -95,8 +95,19 @@ public class GrafoEtiquetado {
 
         if (auxOrig != null && auxDest != null){
             flag = true;
-            conectarAdy(auxOrig, auxDest, etiqueta);
-            conectarAdy(auxDest, auxOrig, etiqueta);
+            NodoAdy ady = auxOrig.getPrimerAdy();
+            while (flag && ady != null){ //como no es un multigrafo, verifico si no hay un arco existente
+                if (destino.equals(ady.getVertice().getElem())){
+                    flag = false;
+                } else {
+                    ady = ady.getSigAdyacente();
+                }
+            }
+
+            if (flag){ //si no existe un arco entre los dos, lo inserto
+                conectarAdy(auxOrig, auxDest, etiqueta);
+                conectarAdy(auxDest, auxOrig, etiqueta);
+            }
         }
 
         return flag;

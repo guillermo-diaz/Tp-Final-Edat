@@ -5,8 +5,6 @@ import java.util.HashMap;
 import util.TecladoIn;
 import java.util.StringTokenizer;
 
-
-
 public class TrenesSA {
     public static final String ROJO = "\u001B[31m";
     public static final String VERDE = "\u001B[32m";
@@ -95,8 +93,6 @@ public class TrenesSA {
         System.out.println("");
         return opcion;
     }
-
-    //System.out.println("-----------------------------------  -----------------------------------");
 
     public static void ABMTrenes(Diccionario trenes, HashMap<String, Lista> mapeo){
         int opcion; 
@@ -755,6 +751,7 @@ public class TrenesSA {
                     break;
                 case 3: 
                     System.out.println(AZUL+"MODIFICAR RIEL\n"+RESET);
+                    System.out.println("Dichos rieles no se pueden modificar");
                     //ver si se puede modificar algo
                     break;
                 case 4: 
@@ -1018,7 +1015,7 @@ public class TrenesSA {
         System.out.println("|                               TRENES                                 |");
         System.out.println("------------------------------------------------------------------------\n");
         System.out.println(trenes.toString());
-        
+
         System.out.println("------------------------------------------------------------------------");
         System.out.println("|                               LINEAS                                 |");
         System.out.println("------------------------------------------------------------------------\n");
@@ -1105,8 +1102,8 @@ public class TrenesSA {
                 grafoMapa.insertarArco(est1, est2, etiqueta);
                 break;
         }
-        
     }
+    
 
     
 }
