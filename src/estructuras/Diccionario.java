@@ -109,10 +109,9 @@ public class Diccionario {
                 
                 //CASOS
                 if (izq != null && der != null){ //Si el elem a eliminar tiene 2 hijos
-                    NodoAVLDicc candidato = menorEnSubarbolDer(der); //busco candidato a reemplazar a su padre
+                    NodoAVLDicc candidato = buscarYEliminarCandidato(der, n); //busco candidato a reemplazar a su padre y lo elimino
                     Comparable claveCand = candidato.getClave();
                     Object datoCand = candidato.getDato();
-                    eliminarAux(der, claveCand, n); //elimino candidato 
 
                     //reemplazo nodo actual con los datos de candidato
                     n.setClave(claveCand); 
@@ -183,7 +182,28 @@ public class Diccionario {
         }
     }
 
-    private NodoAVLDicc menorEnSubarbolDer(NodoAVLDicc n){
+    private NodoAVLDicc buscarYEliminarCandidato(NodoAVLDicc n, NodoAVLDicc padreAux){
+        //busca al elem menor en el subrarbol, lo elimina y luego lo retorna
+        //PC: n no debe ser vacio
+        NodoAVLDicc ret;
+
+        if (n.getIzquierdo() == null){
+            ret = n;
+            padreAux.setIzquierdo(null);
+        } else {
+            ret = buscarYEliminarCandidato(n.getIzquierdo(), n);  
+            n.recalcularAltura(); //recalculo altura
+            int balance = balance(n); //veo el balance de n
+            if (balance < -1 || balance > 1){ //si esta desbalanceado
+                balancear(balance, n, padreAux);
+                n.recalcularAltura();
+            }  
+        }
+        
+        return ret;
+    }
+
+    /*private NodoAVLDicc menorEnSubarbolDer(NodoAVLDicc n){
         //metodo aux que busca el mayor elem de un subarbol
         //PC: n no debe ser vacio
         NodoAVLDicc ret; 
@@ -193,7 +213,7 @@ public class Diccionario {
             ret = menorEnSubarbolDer(n.getIzquierdo());
         }
         return ret;
-    }
+    }*/
 
     private int balance(NodoAVLDicc n){
         //modulo que calcula el balance de un nodoAVL
@@ -400,21 +420,22 @@ public class Diccionario {
         String cad = "";
 
         if (n != null){
-            cad = cad +"("+ n.getClave() + ") Alt:"+n.getAltura()+" ->  "; 
+            cad = cad +"["+ n.getClave() + "]: \n   -> Altura: "+n.getAltura()+" | "; 
             //cad = cad +"("+ n.getClave() + ") ->  ";
             NodoAVLDicc izq, der;
             izq = n.getIzquierdo(); 
             der = n.getDerecho();
             
             if (izq != null){ //si no es nulo imprimo el elem izq
-                cad = cad + "HI: " + izq.getClave() + "    ";
+                cad = cad + "HI: '" + izq.getClave() + "'  ";
             } else {
-                cad = cad + "HI: -    ";
+                cad = cad + "HI: _  ";
             }
+
             if (der != null){ //si no es nulo imprimo el elem der
-                cad = cad + "HD: " + der.getClave()+ "\n";
+                cad = cad + "HD: '" + der.getClave()+ "'\n";
             } else {
-                cad = cad + "HD: -\n";
+                cad = cad + "HD: _\n";
             }
             cad = cad + toStringAux(izq); //voy al hijo izq para seguir imprimiendo
             cad = cad + toStringAux(der); //voy al hijo der para seguir imprimiendo
