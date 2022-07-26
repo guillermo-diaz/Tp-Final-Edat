@@ -231,7 +231,8 @@ public class TrenesSA {
             System.out.println("- Lineas disponibles del sistema: "+mapeo.keySet());
             System.out.println("- Escriba 'LIBRE' si desea asignarlo como libre");
             linea = TecladoIn.readLine();
-            if (linea.equalsIgnoreCase("LIBRE") || mapeo.get(linea) != null){ //si selecciono libre o alguna linea salgo
+            linea = linea.trim();
+            if (linea.equalsIgnoreCase("LIBRE") || mapeo.containsKey(linea)){ //si selecciono libre o alguna linea salgo
                 flag = true;
             } else {
                 System.out.println("La linea ingresada no existe, seleccione otra linea o asignelo como libre");
@@ -884,6 +885,8 @@ public class TrenesSA {
             }
         }
     }
+
+   
 
     public static void cargarDatos(GrafoEtiquetado mapa, Diccionario estaciones, Diccionario trenes, HashMap<String, Lista> lineas){
 

@@ -360,7 +360,28 @@ public class Diccionario {
             ls.insertar(n.getDato(), 1);
             listarClavesAux(n.getIzquierdo(), ls);
         }
+    }
+
+    private void listarPorRangoRR(NodoAVLDicc nodo, Comparable min, Comparable max, Lista lis) {
+        //Si el nodo es nulo
+        if (nodo != null) {
+            if (nodo.getIzquierdo() != null && min.compareTo(nodo.getIzquierdo().getClave()) <= 0) {
+                listarPorRangoRR(nodo.getIzquierdo(), min, max, lis);
+            }
+            if (min.compareTo(nodo.getClave()) <= 0 && (max.compareTo(nodo.getClave())) >= 0) {
+                lis.insertar(nodo.getClave(), lis.longitud() + 1);
+            }
+            if (nodo.getDerecho() != null && max.compareTo(nodo.getDerecho().getClave()) >= 0) {
+                listarPorRangoRR(nodo.getDerecho(), min, max, lis);
+            }
+        }
         
+    }
+
+    public Lista listarPorRango(Comparable min, Comparable max) {
+        Lista lista = new Lista();
+        listarPorRangoRR(raiz, min, max, lista);
+        return lista;
     }
 
     public String toString(){
