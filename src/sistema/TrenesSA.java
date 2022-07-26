@@ -44,13 +44,13 @@ public class TrenesSA {
 					consultasTrenes(trenes, estaciones, mapeo);
 					break;
 				case 7:
-
+                    consultasEstaciones(estaciones);
 					break;
 				case 8:
-
+                    consultasViajes(estaciones, mapa);
 					break;
 				case 9:
-					
+					mostrarSistema(mapa, estaciones, trenes, mapeo);
 					break;
 				case 10:
                     System.out.println("Fin del programa");
@@ -59,17 +59,7 @@ public class TrenesSA {
                     System.out.println("Opcion Incorrecta.");
 					break;
 			}
-		}while(opcion != 10);
-        System.out.println("Grafo: \n"+ mapa.toString());
-        System.out.println("-----------------------");
-        System.out.println("Dicc Estaciones: \n"+estaciones.toString());
-        System.out.println("-------------------------");
-        System.out.println("Dicc Trenes: \n"+trenes.toString());
-        System.out.println("-------------------------");
-        System.out.println("lista "+mapeo.toString());
-
-  
- 
+		}while(opcion != 10); 
     }
 
     public static int menu() {
@@ -828,12 +818,13 @@ public class TrenesSA {
             System.out.println("------------------------------------------------------------------------");
             System.out.println("Ingrese una opcion");
             opcion = TecladoIn.readInt();
+            System.out.println();
             switch(opcion){
                 case 1:
                     mostrarInfoTren(trenes);
                     break;
                 case 2: 
-                  
+                    consultaLineaYCiudades(trenes, lineas);
                     break;
                 case 3: 
                     System.out.println("Volviendo...");
@@ -843,6 +834,7 @@ public class TrenesSA {
                     break;
             }
         } while (opcion != 3);
+        System.out.println();
     }
 
     public static void consultaLineaYCiudades(Diccionario trenes, HashMap<String, Lista> lineas){
@@ -886,7 +878,153 @@ public class TrenesSA {
         }
     }
 
-   
+    public static void consultasEstaciones(Diccionario estaciones){
+        int opcion;
+        do{ 
+            System.out.println("------------------------- Consultas Estaciones -------------------------");
+            System.out.println("1- Mostrar informacion sobre una estacion");
+            System.out.println("2- Dada un nombre, mostrar todas las estaciones que comienzan con dicho nombre");
+            System.out.println("3- Volver");
+            System.out.println("------------------------------------------------------------------------");
+            System.out.println("Ingrese una opcion");
+            opcion = TecladoIn.readInt();
+            System.out.println();
+            switch(opcion){
+                case 1:
+                    mostrarInfoEstacion(estaciones);
+                    break;
+                case 2: 
+                    estacionesConNombre(estaciones);
+                    break;
+                case 3: 
+                    System.out.println("Volviendo...");
+                    break;
+                default: 
+                    System.out.println("Opcion incorrecta");
+                    break;
+            }
+            System.out.println();
+        } while (opcion != 3);
+    }
+
+    public static void estacionesConNombre(Diccionario estaciones){
+        if (estaciones.esVacio()){
+            System.out.println("No hay estaciones disponibles para dicha consulta");
+        } else {
+            System.out.println("Ingrese el nombre con el que empiezan las estaciones que quiere ver");
+            String nombreInicio = TecladoIn.readLine().trim();
+            System.out.println("Lista de estaciones que empiezan con '"+nombreInicio+"': "+estaciones.listarPorRango(nombreInicio, nombreInicio +"ZZZZZZZZ"));
+        }
+    }
+
+    public static void mostrarInfoEstacion(Diccionario estaciones){
+        if (estaciones.esVacio()){
+            System.out.println("No hay estaciones disponibles para mostrar");
+        } else {
+            System.out.println("Estaciones Disponibles "+estaciones.listarClaves());
+            System.out.println("Ingrese el nombre de la estacion");
+            String nombre = TecladoIn.readLine();
+            nombre = nombre.trim();
+            if (estaciones.existeClave(nombre)){
+                Estacion est = (Estacion) estaciones.obtenerInformacion(nombre);
+                System.out.println(est.toString());
+            } else {
+                System.out.println("La estacion no existe");
+            }
+        }
+    }
+
+    public static void consultasViajes(Diccionario estaciones, GrafoEtiquetado mapa){
+        int opcion;
+        do{ 
+            System.out.println("--------------------------- Consultas Viajes ---------------------------");
+            System.out.println("1- Obtener el camino que llegue de una estacion A a una estacion B que pase por menos estaciones");
+            System.out.println("2- Obtener el camino que llegue de una estacion A a una estacion B de menor distancia en kilómetros");
+            System.out.println("3- Volver");
+            System.out.println("------------------------------------------------------------------------");
+            System.out.println("Ingrese una opcion");
+            opcion = TecladoIn.readInt();
+            System.out.println();
+            switch(opcion){
+                case 1:
+                    consultaCaminoMenor(estaciones, mapa);
+                    break;
+                case 2: 
+                    consultaCaminoMenorKm(estaciones, mapa);
+                    break;
+                case 3: 
+                    System.out.println("Volviendo...");
+                    break;
+                default: 
+                    System.out.println("Opcion incorrecta");
+                    break;
+            }
+            System.out.println();
+        } while (opcion != 3);
+    }
+
+    public static void consultaCaminoMenorKm(Diccionario estaciones, GrafoEtiquetado mapa){
+        System.out.println("Estaciones disponibles: "+estaciones.listarClaves());
+        System.out.println("Ingrese el nombre de estacion A");
+        String nombre1 = TecladoIn.readLine();
+        System.out.println("Ingrese el nombre de la estacion B");
+        String nombre2 = TecladoIn.readLine();
+        nombre1 = nombre1.trim();
+        nombre2 = nombre2.trim();
+        if (estaciones.existeClave(nombre1) && estaciones.existeClave(nombre2)){
+            Lista camino = mapa.caminoMenosPeso(nombre1, nombre2);
+            if (camino.esVacia()){
+                System.out.println("No existe un camino entre los 2 nodos");
+            } else {
+                System.out.println("Camino menor distancia en km: "+camino.toString());
+            }
+        } else {
+            System.out.println("ERROR: alguna o ambas de las estaciones ingresadas no existen");
+        }
+    }
+
+    public static void consultaCaminoMenor(Diccionario estaciones, GrafoEtiquetado mapa){
+        System.out.println("Estaciones disponibles: "+estaciones.listarClaves());
+        System.out.println("Ingrese el nombre de estacion A");
+        String nombre1 = TecladoIn.readLine();
+        System.out.println("Ingrese el nombre de la estacion B");
+        String nombre2 = TecladoIn.readLine();
+        nombre1 = nombre1.trim();
+        nombre2 = nombre2.trim();
+        if (estaciones.existeClave(nombre1) && estaciones.existeClave(nombre2)){
+            Lista camino = mapa.caminoMasCorto(nombre1, nombre2);
+            if (camino.esVacia()){
+                System.out.println("No existe un camino entre los 2 nodos");
+            } else {
+                System.out.println("Camino de menor estaciones: "+camino.toString());
+            }
+        } else {
+            System.out.println("ERROR: alguna o ambas de las estaciones ingresadas no existen");
+        }
+    }
+
+    public static void mostrarSistema(GrafoEtiquetado grafoMapa, Diccionario estaciones, Diccionario trenes, HashMap<String, Lista> mapeo){
+        System.out.println("------------------------------------------------------------------------");
+        System.out.println("|                                MAPA                                  |");
+        System.out.println("------------------------------------------------------------------------\n");
+        System.out.println(grafoMapa.toString());
+
+        System.out.println("------------------------------------------------------------------------");
+        System.out.println("|                             ESTACIONES                               |");
+        System.out.println("------------------------------------------------------------------------\n");
+        System.out.println(estaciones.toString());
+
+        System.out.println("------------------------------------------------------------------------");
+        System.out.println("|                               TRENES                                 |");
+        System.out.println("------------------------------------------------------------------------\n");
+        System.out.println(trenes.toString());
+        
+        System.out.println("------------------------------------------------------------------------");
+        System.out.println("|                               LINEAS                                 |");
+        System.out.println("------------------------------------------------------------------------\n");
+        System.out.println(mapeo.toString());
+        System.out.println();
+    }
 
     public static void cargarDatos(GrafoEtiquetado mapa, Diccionario estaciones, Diccionario trenes, HashMap<String, Lista> lineas){
 

@@ -1,6 +1,9 @@
 E;Retiro;Av. Dr. José María Ramos Mejía;1430;CABA;C1104;9;6
 E;Cordoba;Boulevard Juan Domingo Peró;101;Córdoba;5000;6;4
 E;Mar del Plata;San Juan;1642;Mar del Plata;7600;5;4
+E;Villa Aldama;a;1412;d;8000;2;2
+E;Villa Corona;v;21;d;700;1;1
+E;Villa Regina;c;213;d;700;1;2
 L;Linea 1;Retiro;Cordoba
 L;Linea 2;Cordoba;Mar del Plata;Retiro
 R;Retiro;Cordoba;100
