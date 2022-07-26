@@ -314,10 +314,8 @@ public class Diccionario {
         Object ret;
 
         if (n != null){
-            if (elem.compareTo(n.getClave()) == 0){ //si es igual encontramos elem
-                
+            if (elem.compareTo(n.getClave()) == 0){ //si es igual encontramos elem          
                 ret = n.getDato();
-                System.out.println("elem "+n.getDato());
             } else if (elem.compareTo(n.getClave()) < 0) { //Si elem es menor a la raiz busco en subArbol izq
                 ret = obtenerInformacionAux(n.getIzquierdo(), elem);
             } else { //Si elem es mayor a la raiz busco en subArbol der
