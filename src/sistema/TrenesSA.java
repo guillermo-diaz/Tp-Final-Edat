@@ -20,6 +20,7 @@ public class TrenesSA {
         int opcion;
 
         System.out.println();
+        //crearLog();
         do {
 			opcion = menu();
 			switch (opcion) {
@@ -60,6 +61,15 @@ public class TrenesSA {
 		}while(opcion != 10); 
     }
 
+    public static void crearLog(){
+        try {
+            //Creo el PrintWriter que referencia al archivo LOG creado
+            PrintWriter log = new PrintWriter(new File("src\\log.txt"));
+        } catch (IOException e) {
+            System.out.println("Error al crear el archivo LOG:" + e);
+        }
+    }
+
     public static int menu() {
         System.out.println("--------------------------------- Menu ---------------------------------");
         System.out.println("1. Carga inicial del sistema:");
@@ -90,7 +100,7 @@ public class TrenesSA {
         
         System.out.println("Ingrese una opción: ");
         opcion = TecladoIn.readInt();
-        System.out.println("");
+        System.out.println();
         return opcion;
     }
 
@@ -224,6 +234,7 @@ public class TrenesSA {
                 System.out.println("La linea ingresada no existe, seleccione otra linea o asignelo como libre");
             }
         } while (!flag);
+        System.out.println();
         return linea;
     }
 
@@ -232,7 +243,7 @@ public class TrenesSA {
         boolean flag = false;
 
         do {
-            System.out.println("Ingrese la cnatidad de vagones de carga");
+            System.out.println("Ingrese la cantidad de vagones de carga");
             vagones = TecladoIn.readInt();
 
             if (vagones < 0 || vagones > 500){ //error, no existen
@@ -241,6 +252,7 @@ public class TrenesSA {
                 flag = true;
             }
         } while (!flag);
+        System.out.println();
         return vagones;
     }
 
@@ -258,6 +270,7 @@ public class TrenesSA {
                 flag = true;
             }
         } while (!flag);
+        System.out.println();
         return vagones;
     }
 
@@ -270,11 +283,14 @@ public class TrenesSA {
             id = TecladoIn.readInt();
             if (trenes.existeClave(id)){
                 System.out.println("Dicho id ya existe, ingrese otro");
+            } else if (id < 0){
+                System.out.println("ERROR: no puede ingresar un id negativo");
             } else {
                 flag = true;
             }
 
         } while (!flag);
+        System.out.println();
         return id;
     }
 
@@ -311,6 +327,7 @@ public class TrenesSA {
                     flag = false;
             }
         } while (!flag);
+        System.out.println();
         return propulsion;
     }
 
