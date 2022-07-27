@@ -20,7 +20,7 @@ public class TrenesSA {
         int opcion;
 
         System.out.println();
-        //crearLog();
+        crearLog();
         do {
 			opcion = menu();
 			switch (opcion) {
@@ -69,6 +69,30 @@ public class TrenesSA {
             System.out.println("Error al crear el archivo LOG:" + e);
         }
     }
+
+    
+	public static void escribir(Object entrada) {
+		FileWriter fichero = null;
+        PrintWriter pw = null;
+
+        try{
+            fichero = new FileWriter("src\\log.txt", true);
+            pw = new PrintWriter(fichero);
+
+            pw.println(entrada);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+           try {
+           // Nuevamente aprovechamos el finally para 
+           // asegurarnos que se cierra el fichero.
+           if (null != fichero)
+              fichero.close();
+           } catch (Exception e2) {
+              e2.printStackTrace();
+           }
+        }
+	}
 
     public static int menu() {
         System.out.println("--------------------------------- Menu ---------------------------------");
@@ -197,10 +221,11 @@ public class TrenesSA {
         if (trenes.esVacio()){
             System.out.println("No existen trenes que eliminar");
         } else {
-            System.out.println("Ingrese el nombre del tren que quiere eliminar");
-            String nombre = TecladoIn.readLine();
-            if (trenes.existeClave(nombre)){
-                trenes.eliminar(nombre);
+            System.out.println("Ingrese el codigo del tren que quiere eliminar");
+            int id = TecladoIn.readInt();
+            if (trenes.existeClave(id)){
+                trenes.eliminar(id);
+                escribir("Se elimino el tren "+id);
             } else {
                 System.out.println("El tren que seleccionó no existe");
             }
@@ -216,10 +241,11 @@ public class TrenesSA {
 
         Tren tren = new Tren(id, tipoPropulsion, cantVagonesPasajeros, cantVagonesCarga, linea);
         trenes.insertar(id, tren);
+        escribir("Se agregó el tren "+id);
     }
 
     public static String pedirLinea(HashMap<String, Lista> mapeo){
-        String linea = "";
+        String linea;
         boolean flag = false;    
 
         do {
@@ -580,6 +606,7 @@ public class TrenesSA {
             }
         } while (opcion != 4);
     }
+    
 
     public static void modificarLinea(Diccionario estaciones, HashMap<String, Lista> lineas){
         if (!lineas.isEmpty()){
@@ -738,10 +765,10 @@ public class TrenesSA {
 
         do {
             System.out.println("Ingrese el nombre de la linea");
-            nombre = TecladoIn.readLine();
+            nombre = TecladoIn.readLine().trim();
             if (lineas.containsKey(nombre)){
                 System.out.println("Dicho nombre ya existe, ingrese otro");
-            } else if (nombre.trim().isEmpty()){
+            } else if (nombre.isEmpty()){
                 System.out.println("ERROR nombre vacio");
             } else{
                 flag = true;
