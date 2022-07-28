@@ -371,14 +371,15 @@ public class Diccionario {
         Lista ls = new Lista();
         listarDatosAux(this.raiz, ls);
         return ls;
+        
     }
 
     private void listarDatosAux(NodoAVLDicc n, Lista ls){
         //Lista los datos del arbol en orden. Recorre el arbol en inorden inverso para insertar en pos 1
         if (n != null){
-            listarClavesAux(n.getDerecho(), ls);
+            listarDatosAux(n.getDerecho(), ls);
             ls.insertar(n.getDato(), 1);
-            listarClavesAux(n.getIzquierdo(), ls);
+            listarDatosAux(n.getIzquierdo(), ls);
         }
     }
 
