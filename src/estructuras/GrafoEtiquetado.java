@@ -78,38 +78,40 @@ public class GrafoEtiquetado {
     public boolean insertarArco(Object origen, Object destino, int etiqueta){
         boolean flag = false;
 
-        NodoVert aux, auxOrig, auxDest;
-        aux = this.inicio; 
-        auxOrig = null;
-        auxDest = null;
+        if (!origen.equals(destino)){ //caso especial: no puede haber un arco que apunte hacia si mismo
+        
+            NodoVert aux, auxOrig, auxDest;
+            aux = this.inicio; 
+            auxOrig = null;
+            auxDest = null;
 
-        while (aux != null && (auxOrig == null || auxDest == null)){ //busco a los 2 nodos
-            if (aux.getElem().equals(origen)){
-                auxOrig = aux;
-            } 
-            if (aux.getElem().equals(destino)){
-                auxDest = aux;
+            while (aux != null && (auxOrig == null || auxDest == null)){ //busco a los 2 nodos
+                if (aux.getElem().equals(origen)){
+                    auxOrig = aux;
+                } 
+                if (aux.getElem().equals(destino)){
+                    auxDest = aux;
+                }
+                aux = aux.getSigVertice();
             }
-            aux = aux.getSigVertice();
-        }
 
-        if (auxOrig != null && auxDest != null){
-            flag = true;
-            NodoAdy ady = auxOrig.getPrimerAdy();
-            while (flag && ady != null){ //como no es un multigrafo, verifico si no hay un arco existente
-                if (destino.equals(ady.getVertice().getElem())){
-                    flag = false;
-                } else {
-                    ady = ady.getSigAdyacente();
+            if (auxOrig != null && auxDest != null){
+                flag = true;
+                NodoAdy ady = auxOrig.getPrimerAdy();
+                while (flag && ady != null){ //como no es un multigrafo, verifico si no hay un arco existente
+                    if (destino.equals(ady.getVertice().getElem())){
+                        flag = false;
+                    } else {
+                        ady = ady.getSigAdyacente();
+                    }
+                }
+
+                if (flag){ //si no existe un arco entre los dos, lo inserto
+                    conectarAdy(auxOrig, auxDest, etiqueta);
+                    conectarAdy(auxDest, auxOrig, etiqueta);
                 }
             }
-
-            if (flag){ //si no existe un arco entre los dos, lo inserto
-                conectarAdy(auxOrig, auxDest, etiqueta);
-                conectarAdy(auxDest, auxOrig, etiqueta);
-            }
         }
-
         return flag;
     }
 

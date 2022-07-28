@@ -1,4 +1,12 @@
-Carga inicial completada
+ESTACION CARGADA: Retiro
+ESTACION CARGADA: Cordoba
+ESTACION CARGADA: Mar del Plata
+ESTACION CARGADA: Villa Aldama
+ESTACION CARGADA: Villa Corona
+ESTACION CARGADA: Villa Regina
+LINEA CARGADA: Linea 1
+LINEA CARGADA: Linea 2
+RIEL CARGADO: Retiro - Cordoba
+Carga inicial completada 
+
 SE AGREGO EL TREN 123
-SE AGREGO EL TREN 456
-SE ELIMINO LA LINEA Linea 1

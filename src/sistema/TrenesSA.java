@@ -38,7 +38,7 @@ public class TrenesSA {
 					ABMLineas(estaciones, mapeo, trenes);
 					break;
 				case 5:
-                    ABMRieles(mapa);
+                    ABMRieles(estaciones, mapa);
 					break;
 				case 6:
 					consultasTrenes(trenes, estaciones, mapeo);
@@ -417,7 +417,7 @@ public class TrenesSA {
                         case 2: 
                             int cantPlataf = pedirCantPlataf();
                             est.setPlataformas(cantPlataf);
-                            escribir("SE MODIFICO LA ESTACION: '"+nombre+"' CAMBIANDO LA CANTIDAD DE PLATAFORMAS ");
+                            escribir("SE MODIFICO LA ESTACION: '"+nombre+"' CAMBIANDO LA CANTIDAD DE PLATAFORMAS");
                             break;
                         case 3: 
                             System.out.println("Estacion Actual: ");
@@ -728,6 +728,7 @@ public class TrenesSA {
     }
 
     public static void eliminarLineaDeTrenes(String nombre, Diccionario trenes){
+        //Cambia a 'LIBRE' los trenes que tengan como linea a 'nombre'
         Lista listaTrenes = trenes.listarDatos();
         int pos, tam = listaTrenes.longitud();
         Tren tren;
@@ -761,6 +762,7 @@ public class TrenesSA {
                     Estacion est = (Estacion) estaciones.obtenerInformacion(nombreEstacion);
                     if (listaEstaciones.localizar(est) < 0){ //si no está registrado
                         listaEstaciones.insertar(est, 1);
+                        escribir("SE AGREGO LA LINEA "+nombreLinea);
                     } else {
                         System.out.println("La linea ya tiene asignada dicha estacion, pruebe con otra");
                     }
@@ -802,7 +804,7 @@ public class TrenesSA {
         return nombre;
     }
     
-    public static void ABMRieles(GrafoEtiquetado mapa){
+    public static void ABMRieles(Diccionario estaciones, GrafoEtiquetado mapa){
         int opcion;
         do {
             System.out.println("------------------------------ ABM Rieles ------------------------------");
@@ -812,11 +814,11 @@ public class TrenesSA {
             switch(opcion){
                 case 1:  
                     System.out.println(VERDE+"AGREGAR RIEL\n"+RESET);
-                    agregarRiel(mapa);
+                    agregarRiel(mapa, estaciones);
                     break;
                 case 2: 
                     System.out.println(ROJO+"ELIMINAR RIEL\n"+RESET);
-                    eliminarRiel(mapa);
+                    eliminarRiel(mapa, estaciones);
                     break;
                 case 3: 
                     System.out.println(AZUL+"MODIFICAR RIEL\n"+RESET);
@@ -833,16 +835,16 @@ public class TrenesSA {
         } while (opcion != 4);
     }
 
-    public static void eliminarRiel(GrafoEtiquetado mapa){
+    public static void eliminarRiel(GrafoEtiquetado mapa, Diccionario estaciones){
         System.out.println("Ingrese el nombre de la primera estacion del riel");
         String nombre1 = TecladoIn.readLine();
         System.out.println("Ingrese el nombre de la segunda estacion del riel");
         String nombre2 = TecladoIn.readLine();
         nombre1 = nombre1.trim();
         nombre2 = nombre2.trim();
-        if (mapa.existeVertice(nombre1) && mapa.existeVertice(nombre2)){
-            if (mapa.existeCamino(nombre1, nombre2)){
-                mapa.eliminarArco(nombre1, nombre2);
+        if (estaciones.existeClave(nombre1) && estaciones.existeClave(nombre2)){
+            if (mapa.eliminarArco(nombre1, nombre2)){  //lo intento eliminar y verifico con el metodo si se pudo
+                escribir("SE ELIMINO EL RIEL ENTRE LAS ESTACIONES '"+nombre1+"' y '"+nombre2+"'");
             } else {
                 System.out.println("No existe un riel entre estas 2 estaciones");
             }
@@ -851,7 +853,7 @@ public class TrenesSA {
         }
     }   
 
-    public static void agregarRiel(GrafoEtiquetado mapa){
+    public static void agregarRiel(GrafoEtiquetado mapa, Diccionario estaciones){
         
         System.out.println("Ingrese el nombre de la primera estacion del riel");
         String nombre1 = TecladoIn.readLine();
@@ -859,14 +861,19 @@ public class TrenesSA {
         String nombre2 = TecladoIn.readLine();
         nombre1 = nombre1.trim();
         nombre2 = nombre2.trim();
-        if (mapa.existeVertice(nombre1) && mapa.existeVertice(nombre2)){
-            if (mapa.existeCamino(nombre1, nombre2)){
-                System.out.println("Ya hay un arco entre estas estaciones");
+        if (estaciones.existeClave(nombre1) && estaciones.existeClave(nombre2)){
+            System.out.println("Ingrese la distancia en km entre las estaciones");
+            int distancia = TecladoIn.readInt();
+            if (distancia < 0){
+                System.out.println("ERROR: Ingrese una distancia coherente");
             } else {
-                System.out.println("Ingrese la distancia en km entre las estaciones");
-                int distancia = TecladoIn.readInt();
-                mapa.insertarArco(nombre1, nombre2, distancia);
+                if (mapa.insertarArco(nombre1, nombre2, distancia)){ //lo intento insertar y verifico si se pudo
+                    escribir("SE AGREGO UN RIEL ENTRE LAS ESTACIONES '"+nombre1+"' y '"+nombre2+"'");
+                } else {
+                    System.out.println("Error: Ya existe un riel entre las estaciones");
+                }
             }
+            
         } else {
             System.out.println("ERROR: alguna o ambas de las estaciones ingresadas no existen");
         }
@@ -1104,7 +1111,7 @@ public class TrenesSA {
                 linea = archivo.readLine();
             }
             archivo.close();
-            escribir("Carga inicial completada");
+            escribir("Carga inicial completada ");
         } catch (FileNotFoundException ex) {
             System.err.println(ex.getMessage());
         } catch (IOException ex) {
@@ -1129,6 +1136,7 @@ public class TrenesSA {
                 Estacion est = new Estacion(nombre, calle, numero, ciudad, cp, cantVias, cantPlataf);
                 estaciones.insertar(nombre , est);
                 grafoMapa.insertarVertice(nombre);
+                escribir("ESTACION CARGADA: "+nombre);
                 break;
             case "T": 
                 //Formato de Tren: (id; tipoPropulsion; cantVagonesPasaj; cantVagonesCarg; linea)
@@ -1139,7 +1147,7 @@ public class TrenesSA {
                 String lineaTren = parte.nextToken();
                 Tren tren = new Tren(id, tipoPropulsion, cantVagonesPasajeros, cantVagonesCarga, lineaTren);
                 trenes.insertar(id, tren);
-                
+                escribir("TREN CARGADO: "+id);
                 break;
             case "L": 
                 //Formato de Linea: (nombre de la línea; y nombre de las estaciones por las que pasa)
@@ -1159,6 +1167,7 @@ public class TrenesSA {
 
                     if (!listaEstaciones.esVacia()){ 
                         mapeo.put(nombreLinea, listaEstaciones);
+                        escribir("LINEA CARGADA: "+nombreLinea);
                     } else { //si una linea no tiene estaciones, entonces no deberia existir
                         listaEstaciones = null;
                     }
@@ -1169,6 +1178,7 @@ public class TrenesSA {
                 String est2 = parte.nextToken();
                 int etiqueta = Integer.parseInt(parte.nextToken());
                 grafoMapa.insertarArco(est1, est2, etiqueta);
+                escribir("RIEL CARGADO: "+est1+" - "+est2);
                 break;
         }
     }
