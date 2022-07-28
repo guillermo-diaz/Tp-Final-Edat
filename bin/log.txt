@@ -1,0 +1,4 @@
+Carga inicial completada
+SE AGREGO EL TREN 123
+SE AGREGO EL TREN 456
+SE ELIMINO LA LINEA Linea 1

@@ -1,6 +1,7 @@
 package sistema;
 import estructuras.*;
 import java.io.*;
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import util.TecladoIn;
 import java.util.StringTokenizer;
@@ -34,7 +35,7 @@ public class TrenesSA {
                     ABMEstaciones(estaciones, mapa);
 					break;
 				case 4:
-					ABMLineas(estaciones, mapeo);
+					ABMLineas(estaciones, mapeo, trenes);
 					break;
 				case 5:
                     ABMRieles(mapa);
@@ -63,17 +64,17 @@ public class TrenesSA {
 
     public static void crearLog(){
         try {
-            //Creo el PrintWriter que referencia al archivo LOG creado
             PrintWriter log = new PrintWriter(new File("src\\log.txt"));
         } catch (IOException e) {
             System.out.println("Error al crear el archivo LOG:" + e);
         }
     }
-
     
-	public static void escribir(Object entrada) {
+	public static void escribir(String entrada) {
 		FileWriter fichero = null;
         PrintWriter pw = null;
+
+        System.out.println(entrada);
 
         try{
             fichero = new FileWriter("src\\log.txt", true);
@@ -84,8 +85,6 @@ public class TrenesSA {
             e.printStackTrace();
         } finally {
            try {
-           // Nuevamente aprovechamos el finally para 
-           // asegurarnos que se cierra el fichero.
            if (null != fichero)
               fichero.close();
            } catch (Exception e2) {
@@ -182,18 +181,22 @@ public class TrenesSA {
                         case 1:
                             String propulsion = pedirTipoPropulsion();
                             tren.setCombustible(propulsion);
+                            escribir("SE MODIFICO EL TREN "+id);
                             break;
                         case 2: 
                             int cantVagonesPasajeros = pedirVagonesPasajeros();
                             tren.setCantVagonesPasajeros(cantVagonesPasajeros);
+                            escribir("SE MODIFICO EL TREN "+id);
                             break;
                         case 3: 
                             int cantVagonesCarga = pedirVagonesCarga();
                             tren.setCantVagonesCarga(cantVagonesCarga);
+                            escribir("SE MODIFICO EL TREN "+id);
                             break;
                         case 4:
                             String linea = pedirLinea(mapeo);
                             tren.setLinea(linea);
+                            escribir("SE MODIFICO EL TREN "+id);
                             break;
                         case 5:
                             System.out.println("Tren Actual: ");
@@ -207,6 +210,7 @@ public class TrenesSA {
                             break;
                     }
                 } while (opcion != 6);
+                
             } else {
                 System.out.println("El tren ingresado no existe");
             } 
@@ -225,7 +229,7 @@ public class TrenesSA {
             int id = TecladoIn.readInt();
             if (trenes.existeClave(id)){
                 trenes.eliminar(id);
-                escribir("Se elimino el tren "+id);
+                escribir("SE ELIMINO EL TREN: "+id);
             } else {
                 System.out.println("El tren que seleccionó no existe");
             }
@@ -241,7 +245,7 @@ public class TrenesSA {
 
         Tren tren = new Tren(id, tipoPropulsion, cantVagonesPasajeros, cantVagonesCarga, linea);
         trenes.insertar(id, tren);
-        escribir("Se agregó el tren "+id);
+        escribir("SE AGREGO EL TREN "+id);
     }
 
     public static String pedirLinea(HashMap<String, Lista> mapeo){
@@ -408,10 +412,12 @@ public class TrenesSA {
                         case 1:
                             int cantVias = pedirCantVias();
                             est.setVias(cantVias);
+                            escribir("SE MODIFICO LA ESTACION: '"+nombre+ "' CAMBIANDO LA CANTIDAD DE VIAS");
                             break;
                         case 2: 
                             int cantPlataf = pedirCantPlataf();
                             est.setPlataformas(cantPlataf);
+                            escribir("SE MODIFICO LA ESTACION: '"+nombre+"' CAMBIANDO LA CANTIDAD DE PLATAFORMAS ");
                             break;
                         case 3: 
                             System.out.println("Estacion Actual: ");
@@ -442,6 +448,7 @@ public class TrenesSA {
             if (estaciones.existeClave(nombre)){
                 estaciones.eliminar(nombre);
                 mapa.eliminarVertice(mapa);
+                escribir("SE ELIMINO LA ESTACION "+nombre);
             } else {
                 System.out.println("Dicha estacion no existe");
             }
@@ -461,6 +468,7 @@ public class TrenesSA {
         Estacion nuevaEstacion = new Estacion(nombre, calle, num, ciu, cp, cantV, cantPlataf);
         estaciones.insertar(nombre, nuevaEstacion);
         mapa.insertarVertice(nombre);
+        escribir("SE AGREGO LA ESTACION: "+nombre);
     }
 
     public static int pedirCantPlataf(){
@@ -577,7 +585,7 @@ public class TrenesSA {
         return nombre;
     }
 
-    public static void ABMLineas(Diccionario estaciones, HashMap<String, Lista> lineas){
+    public static void ABMLineas(Diccionario estaciones, HashMap<String, Lista> lineas, Diccionario trenes){
         int opcion;
         do {
             System.out.println("------------------------------ ABM Lineas ------------------------------");
@@ -591,7 +599,7 @@ public class TrenesSA {
                     break;
                 case 2: 
                 System.out.println(ROJO+"ELIMINAR LINEA\n"+RESET);
-                    eliminarLinea(estaciones, lineas);
+                    eliminarLinea(lineas, trenes);
                     break;
                 case 3: 
                     System.out.println(AZUL+"MODIFICAR LINEA\n"+RESET);
@@ -631,10 +639,10 @@ public class TrenesSA {
                         opcion = TecladoIn.readInt();
                         switch (opcion){
                             case 1:
-                                agregarEstacionDeLinea(estaciones, listaEstaciones);
+                                agregarEstacionDeLinea(estaciones, nombre, listaEstaciones);                         
                                 break;
                             case 2: 
-                                eliminarEstacionDeLinea(estaciones, listaEstaciones);
+                                eliminarEstacionDeLinea(estaciones, nombre, listaEstaciones);
                                 break;
                             case 3: 
                                 System.out.println("Lineas: \n"+lineas.toString());
@@ -657,7 +665,7 @@ public class TrenesSA {
         }
     }
 
-    public static void eliminarEstacionDeLinea(Diccionario estaciones, Lista listaEstaciones){
+    public static void eliminarEstacionDeLinea(Diccionario estaciones, String nombreLinea, Lista listaEstaciones){
         boolean flag = false;
         do {
             System.out.println("Estaciones disponibles en el sistema: "+estaciones.listarClaves());
@@ -672,6 +680,7 @@ public class TrenesSA {
                 } else {
                     listaEstaciones.eliminar(pos);
                     flag = true;
+                    escribir("SE MODIFICO LA LINEA '"+nombreLinea+"' ELIMINANDOLE LA ESTACION: "+nombre);
                 }
             } else {
                 System.out.println("ERROR: dicha estacion no existe");
@@ -679,7 +688,7 @@ public class TrenesSA {
         } while (!flag);
     }
 
-    public static void agregarEstacionDeLinea(Diccionario estaciones, Lista listaEstaciones){
+    public static void agregarEstacionDeLinea(Diccionario estaciones, String nombreLinea, Lista listaEstaciones){
         boolean flag = false;
         do {
             System.out.println("Estaciones Disponibles en el sistema: "+estaciones.listarClaves());
@@ -690,6 +699,7 @@ public class TrenesSA {
                 Estacion est = (Estacion) estaciones.obtenerInformacion(nombre);
                 if (listaEstaciones.localizar(est) > 0){
                     listaEstaciones.agregarElem(est, 1); // si no esta en la lista, lo agrego
+                    escribir("SE MODIFICO LA LINEA '"+nombreLinea+"' AGREGANDOLE LA ESTACION: "+nombre);
                     flag = true;
                 } else {
                     System.out.println("Error: La estacion ya está cargada en la linea, ingrese otra");
@@ -700,7 +710,7 @@ public class TrenesSA {
         } while (!flag);
     }
 
-    public static void eliminarLinea(Diccionario estaciones, HashMap<String, Lista> lineas){
+    public static void eliminarLinea(HashMap<String, Lista> lineas, Diccionario trenes){
         if (lineas.isEmpty()){
             System.out.println("Error: No hay lineas disponibles para eliminar");
         } else {
@@ -709,10 +719,25 @@ public class TrenesSA {
             nombreLinea = nombreLinea.trim();
             if (lineas.containsKey(nombreLinea)){
                 lineas.remove(nombreLinea);
+                escribir("SE ELIMINO LA LINEA "+nombreLinea);
+                eliminarLineaDeTrenes(nombreLinea, trenes);
             } else {
                 System.out.println("Dicha linea no existe");
             }
         }
+    }
+
+    public static void eliminarLineaDeTrenes(String nombre, Diccionario trenes){
+        Lista listaTrenes = trenes.listarDatos();
+        int pos, tam = listaTrenes.longitud();
+        Tren tren;
+
+        for (pos = 1; pos <= tam; pos++){
+            tren = (Tren) listaTrenes.recuperar(pos);
+            if (tren.getLinea().equals(nombre)){ //si tiene asignado esta linea
+                tren.setLinea("LIBRE");
+            }
+        } 
     }
 
     public static void agregarLinea(Diccionario estaciones, HashMap<String, Lista> lineas){
@@ -1079,7 +1104,7 @@ public class TrenesSA {
                 linea = archivo.readLine();
             }
             archivo.close();
-            System.out.println("Carga inicial completada \n ");
+            escribir("Carga inicial completada");
         } catch (FileNotFoundException ex) {
             System.err.println(ex.getMessage());
         } catch (IOException ex) {
