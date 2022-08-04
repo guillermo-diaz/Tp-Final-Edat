@@ -1,9 +1,40 @@
-E;Retiro;Av. Dr. José María Ramos Mejía;1430;CABA;C1104;9;6
-E;Cordoba;Boulevard Juan Domingo Peró;101;Córdoba;5000;6;4
-E;Mar del Plata;San Juan;1642;Mar del Plata;7600;5;4
-E;Villa Aldama;a;1412;d;8000;2;2
-E;Villa Corona;v;21;d;700;1;1
-E;Villa Regina;c;213;d;700;1;2
-L;Linea 1;Retiro;Cordoba
-L;Linea 2;Cordoba;Mar del Plata;Retiro
-R;Retiro;Cordoba;100
+E;Loncopue;Calle A;1;Loncopue;Q8349;1000;10
+E;Plottier;Calle B;2;Plottier;Q8316;1100;14
+E;Villa La Angostura;Calle C;3;Villa La Angostura;8407;1154;5
+E;Cutral-Co;Calle D;4;Cutral-Co;Q8322;900;11
+E;Centenario;Calle E;5;Centenario;Q8309;2000;13
+E;San Patricio del Chañar;Calle F;6;San Patricio del Chañar;Q8306;600;12
+E;Senillosa;Calle G;7;Senillosa;8316;850;5
+E;Zapala;Calle H;8;Zapala;Q8340;1112;4
+E;Villa Pehuenia;Calle I;9;Villa Pehuenia;N8345;3000;3
+E;Villa El Chocon;Calle J;10;Villa El Chocon;8311;2400;2
+E;Alumine;Calle K;11;Alumine;Q8345;2223;15
+E;Barrancas;Calle L;12;Barrancas;8353;1200;14
+E;Junin de los Andes;Calle M;13;Junin de los Andes;Q8371;400;11
+E;San Martin de los Andes;Calle N;14;San Martin de los Andes;Q8370;2532;2
+E;Rincon de los Sauces;Calle O;15;Rincon de los Sauces;Q8319;1784;8
+E;Neuquen;Calle P;16;Neuquen;8300;1834;9
+E;Piedra del Aguila;Calle R;17;Piedra del Aguila;Q8315;1283;24
+E;Plaza Huincul;Calle S;18;Plaza Huincul;Q8318;1369;19
+E;Mariano Moreno;Calle T;19;Mariano Moreno;8351;1000;15
+E;Picun Leufu;Calle U;20;Picun Leufu;Q8313;800;14
+T;8;Electricidad;30;2;Linea 1
+T;16;Electricidad;20;1;Linea 5
+T;24;Diesel;10;30;Linea 9
+T;5;Fuel oil;25;5;LIBRE
+T;3;Gasolina;25;10;Linea 2
+T;18;Fuel oil;20;5;Linea 2
+T;34;Gasolina;10;40;Linea 3
+T;28;Gasolina;11;28;Linea 8
+T;30;Fuel oil;45;0;Linea 4
+T;12;Fuel oil;3;1;Linea 5
+T;1;Gasolina;4;5;Linea 7
+T;10;Fuel oil;2;9;Linea 8
+T;40;Hibrido;24;1;Linea 2
+T;4;Electricidad;22;2;Linea 10
+T;7;Gasolina;30;0;Linea 10
+T;6;Fuel oil;23;4;Linea 6
+T;9;Hibrido;21;10;LIBRE
+T;32;Electricidad;12;10;LIBRE
+T;11;Gasolina;5;20;LIBRE
+T;20;Hibrido;7;22;LIBRE

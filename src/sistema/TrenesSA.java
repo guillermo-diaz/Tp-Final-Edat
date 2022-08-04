@@ -1,7 +1,6 @@
 package sistema;
 import estructuras.*;
 import java.io.*;
-import java.nio.charset.Charset;
 import java.util.HashMap;
 import util.TecladoIn;
 import java.util.StringTokenizer;
@@ -61,37 +60,6 @@ public class TrenesSA {
 			}
 		}while(opcion != 10); 
     }
-
-    public static void crearLog(){
-        try {
-            PrintWriter log = new PrintWriter(new File("src\\log.txt"));
-        } catch (IOException e) {
-            System.out.println("Error al crear el archivo LOG:" + e);
-        }
-    }
-    
-	public static void escribir(String entrada) {
-		FileWriter fichero = null;
-        PrintWriter pw = null;
-
-        System.out.println(entrada);
-
-        try{
-            fichero = new FileWriter("src\\log.txt", true);
-            pw = new PrintWriter(fichero);
-
-            pw.println(entrada);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-           try {
-           if (null != fichero)
-              fichero.close();
-           } catch (Exception e2) {
-              e2.printStackTrace();
-           }
-        }
-	}
 
     public static int menu() {
         System.out.println("--------------------------------- Menu ---------------------------------");
@@ -868,7 +836,7 @@ public class TrenesSA {
                 System.out.println("ERROR: Ingrese una distancia coherente");
             } else {
                 if (mapa.insertarArco(nombre1, nombre2, distancia)){ //lo intento insertar y verifico si se pudo
-                    escribir("SE AGREGO UN RIEL ENTRE LAS ESTACIONES '"+nombre1+"' y '"+nombre2+"'");
+                    escribir("SE AGREGO UN RIEL DE "+distancia+" KM ENTRE LAS ESTACIONES '"+nombre1+"' y '"+nombre2+"'");
                 } else {
                     System.out.println("Error: Ya existe un riel entre las estaciones");
                 }
@@ -989,6 +957,7 @@ public class TrenesSA {
             System.out.println("Lista de estaciones que empiezan con '"+nombreInicio+"': "+estaciones.listarPorRango(nombreInicio, nombreInicio +"ZZZZZZZZ"));
         }
     }
+    
 
     public static void mostrarInfoEstacion(Diccionario estaciones){
         if (estaciones.esVacio()){
@@ -1134,20 +1103,22 @@ public class TrenesSA {
                 int cantVias = Integer.parseInt(parte.nextToken());
                 int cantPlataf = Integer.parseInt(parte.nextToken());
                 Estacion est = new Estacion(nombre, calle, numero, ciudad, cp, cantVias, cantPlataf);
-                estaciones.insertar(nombre , est);
-                grafoMapa.insertarVertice(nombre);
-                escribir("ESTACION CARGADA: "+nombre);
+                if (estaciones.insertar(nombre , est) && grafoMapa.insertarVertice(nombre)){
+                    escribir("ESTACION CARGADA: "+nombre);
+                }
                 break;
             case "T": 
                 //Formato de Tren: (id; tipoPropulsion; cantVagonesPasaj; cantVagonesCarg; linea)
                 int id = Integer.parseInt(parte.nextToken());
-                String tipoPropulsion = parte.nextToken();
+                String tipoPropulsion = parte.nextToken().trim();
                 int cantVagonesPasajeros = Integer.parseInt(parte.nextToken());
                 int cantVagonesCarga = Integer.parseInt(parte.nextToken());
                 String lineaTren = parte.nextToken();
                 Tren tren = new Tren(id, tipoPropulsion, cantVagonesPasajeros, cantVagonesCarga, lineaTren);
-                trenes.insertar(id, tren);
-                escribir("TREN CARGADO: "+id);
+                if (trenes.insertar(id, tren)){
+                    escribir("TREN CARGADO: "+id);
+                }
+
                 break;
             case "L": 
                 //Formato de Linea: (nombre de la línea; y nombre de las estaciones por las que pasa)
@@ -1174,14 +1145,47 @@ public class TrenesSA {
                 }  
                 break;
             case "R": 
+                //Formato de Riel: (nombre de la estacion 1; nombre de la estacion 2; distancia entre las 2 estaciones)
                 String est1 = parte.nextToken();
                 String est2 = parte.nextToken();
                 int etiqueta = Integer.parseInt(parte.nextToken());
-                grafoMapa.insertarArco(est1, est2, etiqueta);
-                escribir("RIEL CARGADO: "+est1+" - "+est2);
+                if (grafoMapa.insertarArco(est1, est2, etiqueta)){
+                    escribir("RIEL DE "+etiqueta+" KM CARGADO: "+est1+" - "+est2);
+                }
                 break;
         }
     }
+
+    public static void crearLog(){
+        try {
+            PrintWriter log = new PrintWriter(new File("src\\log.txt"));
+        } catch (IOException e) {
+            System.out.println("Error al crear el archivo LOG:" + e);
+        }
+    }
+    
+	public static void escribir(String entrada) {
+		FileWriter fichero = null;
+        PrintWriter pw = null;
+
+        System.out.println(entrada);
+
+        try{
+            fichero = new FileWriter("src\\log.txt", true);
+            pw = new PrintWriter(fichero);
+
+            pw.println(entrada);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+           try {
+           if (fichero != null)
+              fichero.close();
+           } catch (Exception e2) {
+              e2.printStackTrace();
+           }
+        }
+	}
     
 
     
