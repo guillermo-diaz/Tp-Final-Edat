@@ -836,7 +836,7 @@ public class TrenesSA {
                 System.out.println("ERROR: Ingrese una distancia coherente");
             } else {
                 if (mapa.insertarArco(nombre1, nombre2, distancia)){ //lo intento insertar y verifico si se pudo
-                    escribir("SE AGREGO UN RIEL DE "+distancia+" KM ENTRE LAS ESTACIONES '"+nombre1+"' y '"+nombre2+"'");
+                    escribir("SE AGREGO UN RIEL ENTRE LAS ESTACIONES '"+nombre1+"' y '"+nombre2+"'");
                 } else {
                     System.out.println("Error: Ya existe un riel entre las estaciones");
                 }
@@ -1081,6 +1081,7 @@ public class TrenesSA {
             }
             archivo.close();
             escribir("Carga inicial completada ");
+            System.out.println();
         } catch (FileNotFoundException ex) {
             System.err.println(ex.getMessage());
         } catch (IOException ex) {

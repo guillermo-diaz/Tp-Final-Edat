@@ -38,3 +38,43 @@ T;9;Hibrido;21;10;LIBRE
 T;32;Electricidad;12;10;LIBRE
 T;11;Gasolina;5;20;LIBRE
 T;20;Hibrido;7;22;LIBRE
+R;Alumine;Barrancas;90
+R;Plaza Huincul;Barrancas;130
+R;Plaza Huincul;Villa El Chocon;120
+R;Villa El Chocon;Villa La Angostura;60
+R;Villa La Angostura;Loncopue;60
+R;Loncopue;Cutral-Co;90
+R;Loncopue;Plottier;40
+R;Villa El Chocon;Barrancas;40
+R;Barrancas;Cutral-Co;60
+R;Villa La Angostura;Cutral-Co;50
+R;Plottier;Cutral-Co;30
+R;Barrancas;Centenario;60
+R;Cutral-Co;Centenario;60
+R;Plottier;Junin de los Andes;10
+R;Junin de los Andes;Centenario;15
+R;San Martin de los Andes;Centenario;10
+R;San Martin de los Andes;Mariano Moreno;30
+R;San Martin de los Andes;Picun Leufu;90
+R;Loncopue;Senillosa;200
+R;Villa Pehuenia;Junin de los Andes;35
+R;Villa Pehuenia;Senillosa;35
+R;Villa Pehuenia;Zapala;50
+R;Zapala;Senillosa;30
+R;Senillosa;Neuquen;90
+R;Zapala;Neuquen;20
+R;Rincon de los Sauces;Zapala;130
+R;Rincon de los Sauces;Centenario;120
+R;Rincon de los Sauces;Piedra del Aguila;70
+R;Piedra del Aguila;Neuquen;150
+R;Neuquen;San Patricio del Chañar;70
+L;Linea 1;Alumine;Barrancas;Plaza Huincul;Villa El Chocon;Villa La Angostura;Loncopue;Senillosa;Neuquen;San Patricio del Chañar
+L;Linea 2;Villa El Chocon;Plaza Huincul;Barrancas
+L;Linea 3;Barrancas;Cutral-Co;Villa La Angostura;Loncopue
+L;Linea 4;Alumine;Barrancas;Centenario;Junin de los Andes;San Martin de los Andes;Mariano Moreno;Picun Leufu
+L;Linea 5;Mariano Moreno;San Martin de los Andes;Centenario;Junin de los Andes;Plottier;Loncopue;Villa La Angostura;Cutral-Co
+L;Linea 6;Junin de los Andes;Villa Pehuenia;Senillosa;Zapala 
+L;Linea 7;Mariano Moreno;San Martin de los Andes;Centenario;Barrancas
+L;Linea 8;Loncopue;Senillosa
+L;Linea 9;Neuquen;Zapala;Villa Pehuenia;Junin de los Andes;Centenario;Rincon de los Sauces;Piedra del Aguila
+L;Linea 10;San Patricio del Chañar;Neuquen
