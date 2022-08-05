@@ -19,7 +19,7 @@ public class Lista {
     }
 
     public boolean esVacia(){
-        //verifica si la pila esta vacia
+        //verifica si la lista esta vacia
         return this.cabecera == null;
     }
 
@@ -139,7 +139,7 @@ public class Lista {
         if (this.esVacia()){ //error pila vacia
             cad = "Lista Vacia";
         } else {
-            cad = "| ";
+            cad = "[ ";
             Nodo aux = this.cabecera;
             while (aux != null){
                 cad = cad + aux.getElem().toString();
@@ -148,7 +148,7 @@ public class Lista {
                     cad = cad + ", ";
                 }
             }
-            cad = cad + " |";
+            cad = cad + " ]";
         }
         return cad;
     }

@@ -49,7 +49,7 @@ public class Tren {
     }
 
     public String toString() {
-        return  id +": "+tipoPropulsion+", "+cantVagonesPasajeros+", "+cantVagonesCarga
+        return  "'"+id +"': TP: "+tipoPropulsion+", Vagones Pasajeros: "+cantVagonesPasajeros+", Vagones Carga: "+cantVagonesCarga
                 +", "+linea;
     }
 }

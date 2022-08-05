@@ -59,6 +59,7 @@ public class TrenesSA {
 					break;
 			}
 		}while(opcion != 10); 
+      
     }
 
     public static int menu() {
@@ -134,7 +135,6 @@ public class TrenesSA {
                 Tren tren = (Tren) trenes.obtenerInformacion(id);
                 int opcion;
                 do{
-                   
                     System.out.println("Operaciones: ");
                     System.out.println("1- Cambiar el tipo Propulsion:");
                     System.out.println("2- Cambiar la cantidad de vagones pasajeros");
@@ -195,8 +195,7 @@ public class TrenesSA {
         } else {
             System.out.println("Ingrese el codigo del tren que quiere eliminar");
             int id = TecladoIn.readInt();
-            if (trenes.existeClave(id)){
-                trenes.eliminar(id);
+            if (trenes.eliminar(id)){ //lo intento eliminar
                 escribir("SE ELIMINO EL TREN: "+id);
             } else {
                 System.out.println("El tren que seleccionó no existe");
@@ -279,10 +278,10 @@ public class TrenesSA {
         do {
             System.out.println("Ingrese el id");
             id = TecladoIn.readInt();
-            if (trenes.existeClave(id)){
-                System.out.println("Dicho id ya existe, ingrese otro");
-            } else if (id < 0){
+            if (id < 0){
                 System.out.println("ERROR: no puede ingresar un id negativo");
+            } else if (trenes.existeClave(id)){
+                System.out.println("Dicho id ya existe, ingrese otro");
             } else {
                 flag = true;
             }
@@ -413,9 +412,8 @@ public class TrenesSA {
         } else {
             System.out.println("Ingrese el nombre de la estacion que va a eliminar");
             String nombre = TecladoIn.readLine();
-            if (estaciones.existeClave(nombre)){
-                estaciones.eliminar(nombre);
-                mapa.eliminarVertice(mapa);
+            if (estaciones.eliminar(nombre)){ //lo elimino del
+                mapa.eliminarVertice(nombre); //si se elimino la estacion, lo saco del mapa
                 escribir("SE ELIMINO LA ESTACION "+nombre);
             } else {
                 System.out.println("Dicha estacion no existe");
@@ -542,10 +540,10 @@ public class TrenesSA {
         do {
             System.out.println("Ingrese el nombre de la estacion");
             nombre = TecladoIn.readLine();
-            if (estaciones.existeClave(nombre)){
-                System.out.println("Dicho nombre ya existe, ingrese otro");
-            } else if (nombre.trim().isEmpty()){
+            if (nombre.trim().isEmpty()){
                 System.out.println("ERROR nombre vacio");
+            } else if (estaciones.existeClave(nombre)){
+                System.out.println("Dicho nombre ya existe, ingrese otro");
             } else{
                 flag = true;
             }
@@ -566,7 +564,7 @@ public class TrenesSA {
                     agregarLinea(estaciones, lineas);
                     break;
                 case 2: 
-                System.out.println(ROJO+"ELIMINAR LINEA\n"+RESET);
+                    System.out.println(ROJO+"ELIMINAR LINEA\n"+RESET);
                     eliminarLinea(lineas, trenes);
                     break;
                 case 3: 
@@ -665,8 +663,8 @@ public class TrenesSA {
             nombre = nombre.trim();
             if (estaciones.existeClave(nombre)){
                 Estacion est = (Estacion) estaciones.obtenerInformacion(nombre);
-                if (listaEstaciones.localizar(est) > 0){
-                    listaEstaciones.agregarElem(est, 1); // si no esta en la lista, lo agrego
+                if (listaEstaciones.localizar(est) < 0){
+                    listaEstaciones.insertar(est, 1);// si no esta en la lista, lo agrego
                     escribir("SE MODIFICO LA LINEA '"+nombreLinea+"' AGREGANDOLE LA ESTACION: "+nombre);
                     flag = true;
                 } else {
@@ -687,8 +685,9 @@ public class TrenesSA {
             nombreLinea = nombreLinea.trim();
             if (lineas.containsKey(nombreLinea)){
                 lineas.remove(nombreLinea);
+                eliminarLineaDeTrenes(nombreLinea, trenes); //elimino la linea de los trenes que esten en ella
                 escribir("SE ELIMINO LA LINEA "+nombreLinea);
-                eliminarLineaDeTrenes(nombreLinea, trenes);
+                
             } else {
                 System.out.println("Dicha linea no existe");
             }
@@ -697,7 +696,7 @@ public class TrenesSA {
 
     public static void eliminarLineaDeTrenes(String nombre, Diccionario trenes){
         //Cambia a 'LIBRE' los trenes que tengan como linea a 'nombre'
-        Lista listaTrenes = trenes.listarDatos();
+        Lista listaTrenes = trenes.listarDatos(); //lista de todos los trenes
         int pos, tam = listaTrenes.longitud();
         Tren tren;
 
@@ -728,9 +727,8 @@ public class TrenesSA {
 
                 if (estaciones.existeClave(nombreEstacion)){ 
                     Estacion est = (Estacion) estaciones.obtenerInformacion(nombreEstacion);
-                    if (listaEstaciones.localizar(est) < 0){ //si no está registrado
+                    if (listaEstaciones.localizar(est) < 0){ //si la estacion no está registrada
                         listaEstaciones.insertar(est, 1);
-                        escribir("SE AGREGO LA LINEA "+nombreLinea);
                     } else {
                         System.out.println("La linea ya tiene asignada dicha estacion, pruebe con otra");
                     }
@@ -749,6 +747,7 @@ public class TrenesSA {
                 System.out.println("Hubo un error: No se puede crear la linea si no pasa por ninguna estacion");
             } else {
                 lineas.put(nombreLinea, listaEstaciones);
+                escribir("SE AGREGO LA LINEA "+nombreLinea);
             }
         }
         
@@ -761,10 +760,10 @@ public class TrenesSA {
         do {
             System.out.println("Ingrese el nombre de la linea");
             nombre = TecladoIn.readLine().trim();
-            if (lineas.containsKey(nombre)){
+            if (nombre.isEmpty() ){
+                System.out.println("ERROR nombre vacio"); 
+            } else if (lineas.containsKey(nombre)){
                 System.out.println("Dicho nombre ya existe, ingrese otro");
-            } else if (nombre.isEmpty()){
-                System.out.println("ERROR nombre vacio");
             } else{
                 flag = true;
             }
@@ -954,7 +953,7 @@ public class TrenesSA {
         } else {
             System.out.println("Ingrese el nombre con el que empiezan las estaciones que quiere ver");
             String nombreInicio = TecladoIn.readLine().trim();
-            System.out.println("Lista de estaciones que empiezan con '"+nombreInicio+"': "+estaciones.listarPorRango(nombreInicio, nombreInicio +"ZZZZZZZZ"));
+            System.out.println("Lista de estaciones que empiezan con '"+nombreInicio+"': "+estaciones.listarPorRango(nombreInicio, nombreInicio +"ZZZZZZZZZZZZZZZZZZZZZ"));
         }
     }
     
@@ -969,7 +968,7 @@ public class TrenesSA {
             nombre = nombre.trim();
             if (estaciones.existeClave(nombre)){
                 Estacion est = (Estacion) estaciones.obtenerInformacion(nombre);
-                System.out.println(est.toString());
+                System.out.println(est.mostrarDatos());
             } else {
                 System.out.println("La estacion no existe");
             }
@@ -1006,43 +1005,53 @@ public class TrenesSA {
     }
 
     public static void consultaCaminoMenorKm(Diccionario estaciones, GrafoEtiquetado mapa){
-        System.out.println("Estaciones disponibles: "+estaciones.listarClaves());
-        System.out.println("Ingrese el nombre de estacion A");
-        String nombre1 = TecladoIn.readLine();
-        System.out.println("Ingrese el nombre de la estacion B");
-        String nombre2 = TecladoIn.readLine();
-        nombre1 = nombre1.trim();
-        nombre2 = nombre2.trim();
-        if (estaciones.existeClave(nombre1) && estaciones.existeClave(nombre2)){
-            Lista camino = mapa.caminoMenosPeso(nombre1, nombre2);
-            if (camino.esVacia()){
-                System.out.println("No existe un camino entre los 2 nodos");
+        if (!mapa.esVacio()){
+            System.out.println("Estaciones disponibles: "+estaciones.listarClaves());
+            System.out.println("Ingrese el nombre de estacion A");
+            String nombre1 = TecladoIn.readLine();
+            System.out.println("Ingrese el nombre de la estacion B");
+            String nombre2 = TecladoIn.readLine();
+            nombre1 = nombre1.trim();
+            nombre2 = nombre2.trim();
+            if (estaciones.existeClave(nombre1) && estaciones.existeClave(nombre2)){
+                Lista camino = mapa.caminoMenosPeso(nombre1, nombre2);
+                if (camino.esVacia()){
+                    System.out.println("No existe un camino entre los 2 nodos");
+                } else {
+                    System.out.println("Camino menor distancia en km: "+camino.toString());
+                }
             } else {
-                System.out.println("Camino menor distancia en km: "+camino.toString());
+                System.out.println("ERROR: alguna o ambas de las estaciones ingresadas no existen");
             }
         } else {
-            System.out.println("ERROR: alguna o ambas de las estaciones ingresadas no existen");
+            System.out.println("ERROR no hay datos en el mapa");
         }
+        
     }
 
     public static void consultaCaminoMenor(Diccionario estaciones, GrafoEtiquetado mapa){
-        System.out.println("Estaciones disponibles: "+estaciones.listarClaves());
-        System.out.println("Ingrese el nombre de estacion A");
-        String nombre1 = TecladoIn.readLine();
-        System.out.println("Ingrese el nombre de la estacion B");
-        String nombre2 = TecladoIn.readLine();
-        nombre1 = nombre1.trim();
-        nombre2 = nombre2.trim();
-        if (estaciones.existeClave(nombre1) && estaciones.existeClave(nombre2)){
-            Lista camino = mapa.caminoMasCorto(nombre1, nombre2);
-            if (camino.esVacia()){
-                System.out.println("No existe un camino entre los 2 nodos");
+        if (!mapa.esVacio()){
+            System.out.println("Estaciones disponibles: "+estaciones.listarClaves());
+            System.out.println("Ingrese el nombre de estacion A");
+            String nombre1 = TecladoIn.readLine();
+            System.out.println("Ingrese el nombre de la estacion B");
+            String nombre2 = TecladoIn.readLine();
+            nombre1 = nombre1.trim();
+            nombre2 = nombre2.trim();
+            if (estaciones.existeClave(nombre1) && estaciones.existeClave(nombre2)){
+                Lista camino = mapa.caminoMasCorto(nombre1, nombre2);
+                if (camino.esVacia()){
+                    System.out.println("No existe un camino entre los 2 nodos");
+                } else {
+                    System.out.println("Camino de menor estaciones: "+camino.toString());
+                }
             } else {
-                System.out.println("Camino de menor estaciones: "+camino.toString());
+                System.out.println("ERROR: alguna o ambas de las estaciones ingresadas no existen");
             }
         } else {
-            System.out.println("ERROR: alguna o ambas de las estaciones ingresadas no existen");
+            System.out.println("ERROR no hay datos en el mapa");
         }
+        
     }
 
     public static void mostrarSistema(GrafoEtiquetado grafoMapa, Diccionario estaciones, Diccionario trenes, HashMap<String, Lista> mapeo){
@@ -1151,7 +1160,7 @@ public class TrenesSA {
                 String est2 = parte.nextToken();
                 int etiqueta = Integer.parseInt(parte.nextToken());
                 if (grafoMapa.insertarArco(est1, est2, etiqueta)){
-                    escribir("RIEL DE "+etiqueta+" KM CARGADO: "+est1+" - "+est2);
+                    escribir("RIEL CARGADO: "+est1+" - "+est2);
                 }
                 break;
         }

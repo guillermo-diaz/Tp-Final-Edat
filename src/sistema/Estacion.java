@@ -51,9 +51,13 @@ public class Estacion implements Comparable{
         this.cantPlataformas = cantPlataformas;
     }
 
-    public String toString() {
-        return " "+NOMBRE+"', Direccion: " +calle+ " "+numero+", "+ciudad+", CP: "+codigoPostal+
+    public String mostrarDatos(){
+        return " '"+NOMBRE+"', Direccion: " +calle+ " "+numero+", "+ciudad+", CP: "+codigoPostal+
         ", CantVias: "+cantVias+", cantPlataformas: "+cantPlataformas+" ";
+    }
+
+    public String toString() {
+        return " '"+NOMBRE+"' ";
     } 
 
     public boolean equals(Estacion otro){
@@ -62,7 +66,6 @@ public class Estacion implements Comparable{
     
     @Override
     public int compareTo(Object o) {
-
         Estacion otraEstacion = (Estacion) o;
         return this.NOMBRE.compareTo(otraEstacion.NOMBRE);
     }

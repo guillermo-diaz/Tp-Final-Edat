@@ -174,7 +174,7 @@ public class Diccionario {
                 }
             }
         } else { //caso especial: si el elem es raiz lo reemplazo por su hijo
-            if (izq == null){
+            if (der == null){
                 this.raiz = izq;
             } else {
                 this.raiz = der;
@@ -374,6 +374,50 @@ public class Diccionario {
         
     }
 
+    public Lista listarPorRango(Comparable min, Comparable max) {
+        //vamos a buscar en el arbol los elementos en el rango
+        Lista ls = new Lista();
+
+        if (min.compareTo(max) <= 0) { //si min <= max
+            if (this.raiz != null) {
+                listarPorRangoAux(this.raiz, ls, min, max);
+            }
+        }
+
+        return ls;
+    }
+
+    private void listarPorRangoAux(NodoAVLDicc n, Lista ls, Comparable min, Comparable max) {
+        NodoAVLDicc izq, der;
+        izq = n.getIzquierdo();
+        der = n.getDerecho();
+        Comparable elem = n.getClave();
+        int compareMin = elem.compareTo(min);
+        int compareMax = elem.compareTo(max);
+
+        if (compareMin >= 0 && compareMax <= 0) { // si min <= n <= max
+            
+            if (izq != null && compareMin != 0) { // si tiene HI y n > min
+                listarPorRangoAux(izq, ls, min, max);
+            }
+            
+            ls.insertar(elem, ls.longitud() + 1);
+
+            if (der != null && compareMax != 0) { // si tiene HD y n < max 
+                listarPorRangoAux(der, ls, min, max);
+            }
+        } else {
+            //en caso de que no este dentro del rango
+            if (der != null && compareMin < 0) {  //si n < min voy a la der
+                listarPorRangoAux(der, ls, min, max);
+            } 
+            if (izq != null && compareMax > 0) { //si n > max voy a la izq
+                listarPorRangoAux(izq, ls, min, max);
+            }
+            
+        }
+    }
+
     private void listarDatosAux(NodoAVLDicc n, Lista ls){
         //Lista los datos del arbol en orden. Recorre el arbol en inorden inverso para insertar en pos 1
         if (n != null){
@@ -381,28 +425,6 @@ public class Diccionario {
             ls.insertar(n.getDato(), 1);
             listarDatosAux(n.getIzquierdo(), ls);
         }
-    }
-
-    private void listarPorRangoRR(NodoAVLDicc nodo, Comparable min, Comparable max, Lista lis) {
-        //Si el nodo es nulo
-        if (nodo != null) {
-            if (nodo.getIzquierdo() != null && min.compareTo(nodo.getIzquierdo().getClave()) <= 0) {
-                listarPorRangoRR(nodo.getIzquierdo(), min, max, lis);
-            }
-            if (min.compareTo(nodo.getClave()) <= 0 && (max.compareTo(nodo.getClave())) >= 0) {
-                lis.insertar(nodo.getClave(), lis.longitud() + 1);
-            }
-            if (nodo.getDerecho() != null && max.compareTo(nodo.getDerecho().getClave()) >= 0) {
-                listarPorRangoRR(nodo.getDerecho(), min, max, lis);
-            }
-        }
-        
-    }
-
-    public Lista listarPorRango(Comparable min, Comparable max) {
-        Lista lista = new Lista();
-        listarPorRangoRR(raiz, min, max, lista);
-        return lista;
     }
 
     public String toString(){
