@@ -1016,7 +1016,7 @@ public class TrenesSA {
             if (estaciones.existeClave(nombre1) && estaciones.existeClave(nombre2)){
                 Lista camino = mapa.caminoMenosPeso(nombre1, nombre2);
                 if (camino.esVacia()){
-                    System.out.println("No existe un camino entre los 2 nodos");
+                    System.out.println("No existe un camino entre las 2 estaciones");
                 } else {
                     System.out.println("Camino menor distancia en km: "+camino.toString());
                 }

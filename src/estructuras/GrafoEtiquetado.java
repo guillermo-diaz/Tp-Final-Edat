@@ -32,11 +32,11 @@ public class GrafoEtiquetado {
         if (aux != null){
             NodoAdy ady = aux.getPrimerAdy();
             while (ady != null){
-                eliminarArcoAux(ady.getVertice(), elem);
+                eliminarArcoAux(ady.getVertice(), elem); //para cada vertice lo desconecto del nodo a eliminar
                 ady = ady.getSigAdyacente();
             }
             if (anterior == null){ //caso especial el nodo a eliminar esta en el inicio de la lista de nodos
-                this.inicio = this.inicio.getSigVertice();
+                this.inicio = aux.getSigVertice();
             } else {
                 anterior.setSigVertice(aux.getSigVertice()); 
             }
@@ -44,8 +44,8 @@ public class GrafoEtiquetado {
         return flag;
     }
 
-    private boolean eliminarArcoAux(NodoVert n, Object elem){
-        //elimina un arco hacia el nodo elem, retorna un boolean para verificar si fue encontrado
+    private void eliminarArcoAux(NodoVert n, Object elem){
+        //elimina el arco hacia el nodo elem
         NodoAdy anterior = null, aux = n.getPrimerAdy();
         boolean flag = false;
 
@@ -57,14 +57,13 @@ public class GrafoEtiquetado {
                 aux = aux.getSigAdyacente();
             }
         } 
-        if (flag){
-            if (anterior == null){
+        if (flag){ //si se encontro
+            if (anterior == null){ //caso especial: el arco a eliminar esta en el inicio de la lista de ady
                 n.setPrimerAdy(aux.getSigAdyacente());
             } else {
                 anterior.setSigAdyacente(aux.getSigAdyacente());
             }
         }
-        return flag;
     }
 
     private NodoVert ubicarVertice(Object buscado){
@@ -107,8 +106,8 @@ public class GrafoEtiquetado {
                 }
 
                 if (flag){ //si no existe un arco entre los dos, lo inserto
-                    conectarAdy(auxOrig, auxDest, etiqueta);
-                    conectarAdy(auxDest, auxOrig, etiqueta);
+                    auxOrig.setPrimerAdy(new NodoAdy(auxDest, auxOrig.getPrimerAdy(), etiqueta));
+                    auxDest.setPrimerAdy(new NodoAdy(auxOrig, auxDest.getPrimerAdy(), etiqueta));
                 }
             }
         }
@@ -149,13 +148,8 @@ public class GrafoEtiquetado {
         return flag;
     }
 
-    private void conectarAdy(NodoVert n, NodoVert adyacente, int etiqueta){
-        //precondicion de este metodo: no deben ser nulos
-        NodoAdy nuevo = new NodoAdy(adyacente, n.getPrimerAdy(), etiqueta);
-        n.setPrimerAdy(nuevo);
-    }
-
     public boolean existeVertice(Object elem){
+        //verifica si un vertice esta en el grafo
         boolean flag;
         if (this.ubicarVertice(elem) == null){
             flag = false;
@@ -166,12 +160,13 @@ public class GrafoEtiquetado {
     }
 
     public boolean existeArco(Object origen, Object destino){
+        //verifica si un arco entre orig y dest existe
         boolean flag = false;
         NodoVert auxO = this.ubicarVertice(origen);
 
-        if (auxO != null){
+        if (auxO != null){ //si el origen existe, busco al destino en sus ady
             NodoAdy ady = auxO.getPrimerAdy();
-            while (ady != null){
+            while (!flag && ady != null){
                 if (destino.equals(ady.getVertice().getElem())){
                     flag = true;
                 } else {

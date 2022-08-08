@@ -18,6 +18,16 @@ E;Piedra del Aguila;Calle R;17;Piedra del Aguila;Q8315;1283;24
 E;Plaza Huincul;Calle S;18;Plaza Huincul;Q8318;1369;19
 E;Mariano Moreno;Calle T;19;Mariano Moreno;8351;1000;15
 E;Picun Leufu;Calle U;20;Picun Leufu;Q8313;800;14
+L;Linea 1;Alumine;Barrancas;Plaza Huincul;Villa El Chocon;Villa La Angostura;Loncopue;Senillosa;Neuquen;San Patricio del Chañar
+L;Linea 2;Villa El Chocon;Plaza Huincul;Barrancas
+L;Linea 3;Barrancas;Cutral-Co;Villa La Angostura;Loncopue
+L;Linea 4;Alumine;Barrancas;Centenario;Junin de los Andes;San Martin de los Andes;Mariano Moreno;Picun Leufu
+L;Linea 5;Mariano Moreno;San Martin de los Andes;Centenario;Junin de los Andes;Plottier;Loncopue;Villa La Angostura;Cutral-Co
+L;Linea 6;Junin de los Andes;Villa Pehuenia;Senillosa;Zapala 
+L;Linea 7;Mariano Moreno;San Martin de los Andes;Centenario;Barrancas
+L;Linea 8;Loncopue;Senillosa
+L;Linea 9;Neuquen;Zapala;Villa Pehuenia;Junin de los Andes;Centenario;Rincon de los Sauces;Piedra del Aguila
+L;Linea 10;San Patricio del Chañar;Neuquen
 T;8;Electricidad;30;2;Linea 1
 T;16;Electricidad;20;1;Linea 5
 T;24;Diesel;10;30;Linea 9
@@ -68,13 +78,3 @@ R;Rincon de los Sauces;Centenario;120
 R;Rincon de los Sauces;Piedra del Aguila;70
 R;Piedra del Aguila;Neuquen;150
 R;Neuquen;San Patricio del Chañar;70
-L;Linea 1;Alumine;Barrancas;Plaza Huincul;Villa El Chocon;Villa La Angostura;Loncopue;Senillosa;Neuquen;San Patricio del Chañar
-L;Linea 2;Villa El Chocon;Plaza Huincul;Barrancas
-L;Linea 3;Barrancas;Cutral-Co;Villa La Angostura;Loncopue
-L;Linea 4;Alumine;Barrancas;Centenario;Junin de los Andes;San Martin de los Andes;Mariano Moreno;Picun Leufu
-L;Linea 5;Mariano Moreno;San Martin de los Andes;Centenario;Junin de los Andes;Plottier;Loncopue;Villa La Angostura;Cutral-Co
-L;Linea 6;Junin de los Andes;Villa Pehuenia;Senillosa;Zapala 
-L;Linea 7;Mariano Moreno;San Martin de los Andes;Centenario;Barrancas
-L;Linea 8;Loncopue;Senillosa
-L;Linea 9;Neuquen;Zapala;Villa Pehuenia;Junin de los Andes;Centenario;Rincon de los Sauces;Piedra del Aguila
-L;Linea 10;San Patricio del Chañar;Neuquen

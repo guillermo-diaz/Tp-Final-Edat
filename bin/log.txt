@@ -1,0 +1,81 @@
+ESTACION CARGADA: Loncopue
+ESTACION CARGADA: Plottier
+ESTACION CARGADA: Villa La Angostura
+ESTACION CARGADA: Cutral-Co
+ESTACION CARGADA: Centenario
+ESTACION CARGADA: San Patricio del Chañar
+ESTACION CARGADA: Senillosa
+ESTACION CARGADA: Zapala
+ESTACION CARGADA: Villa Pehuenia
+ESTACION CARGADA: Villa El Chocon
+ESTACION CARGADA: Alumine
+ESTACION CARGADA: Barrancas
+ESTACION CARGADA: Junin de los Andes
+ESTACION CARGADA: San Martin de los Andes
+ESTACION CARGADA: Rincon de los Sauces
+ESTACION CARGADA: Neuquen
+ESTACION CARGADA: Piedra del Aguila
+ESTACION CARGADA: Plaza Huincul
+ESTACION CARGADA: Mariano Moreno
+ESTACION CARGADA: Picun Leufu
+LINEA CARGADA: Linea 1
+LINEA CARGADA: Linea 2
+LINEA CARGADA: Linea 3
+LINEA CARGADA: Linea 4
+LINEA CARGADA: Linea 5
+LINEA CARGADA: Linea 6
+LINEA CARGADA: Linea 7
+LINEA CARGADA: Linea 8
+LINEA CARGADA: Linea 9
+LINEA CARGADA: Linea 10
+TREN CARGADO: 8
+TREN CARGADO: 16
+TREN CARGADO: 24
+TREN CARGADO: 5
+TREN CARGADO: 3
+TREN CARGADO: 18
+TREN CARGADO: 34
+TREN CARGADO: 28
+TREN CARGADO: 30
+TREN CARGADO: 12
+TREN CARGADO: 1
+TREN CARGADO: 10
+TREN CARGADO: 40
+TREN CARGADO: 4
+TREN CARGADO: 7
+TREN CARGADO: 6
+TREN CARGADO: 9
+TREN CARGADO: 32
+TREN CARGADO: 11
+TREN CARGADO: 20
+RIEL CARGADO: Alumine - Barrancas
+RIEL CARGADO: Plaza Huincul - Barrancas
+RIEL CARGADO: Plaza Huincul - Villa El Chocon
+RIEL CARGADO: Villa El Chocon - Villa La Angostura
+RIEL CARGADO: Villa La Angostura - Loncopue
+RIEL CARGADO: Loncopue - Cutral-Co
+RIEL CARGADO: Loncopue - Plottier
+RIEL CARGADO: Villa El Chocon - Barrancas
+RIEL CARGADO: Barrancas - Cutral-Co
+RIEL CARGADO: Villa La Angostura - Cutral-Co
+RIEL CARGADO: Plottier - Cutral-Co
+RIEL CARGADO: Barrancas - Centenario
+RIEL CARGADO: Cutral-Co - Centenario
+RIEL CARGADO: Plottier - Junin de los Andes
+RIEL CARGADO: Junin de los Andes - Centenario
+RIEL CARGADO: San Martin de los Andes - Centenario
+RIEL CARGADO: San Martin de los Andes - Mariano Moreno
+RIEL CARGADO: San Martin de los Andes - Picun Leufu
+RIEL CARGADO: Loncopue - Senillosa
+RIEL CARGADO: Villa Pehuenia - Junin de los Andes
+RIEL CARGADO: Villa Pehuenia - Senillosa
+RIEL CARGADO: Villa Pehuenia - Zapala
+RIEL CARGADO: Zapala - Senillosa
+RIEL CARGADO: Senillosa - Neuquen
+RIEL CARGADO: Zapala - Neuquen
+RIEL CARGADO: Rincon de los Sauces - Zapala
+RIEL CARGADO: Rincon de los Sauces - Centenario
+RIEL CARGADO: Rincon de los Sauces - Piedra del Aguila
+RIEL CARGADO: Piedra del Aguila - Neuquen
+RIEL CARGADO: Neuquen - San Patricio del Chañar
+Carga inicial completada 

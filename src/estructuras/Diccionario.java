@@ -40,7 +40,7 @@ public class Diccionario {
     }
 
     public boolean insertar(Comparable clave, Object dato){
-        //inserta un elem conservando el orden de el arbol 
+        //inserta un elem conservando el orden del arbol 
         boolean verif = true;
 
         if (this.raiz == null){
@@ -53,6 +53,7 @@ public class Diccionario {
 
     private boolean insertarAux(NodoAVLDicc n, Comparable elem, Object dato, NodoAVLDicc padreAux){
         //metodo aux que inserta un elem en un arbol no vacio, devuelve false si el elem ya existe
+        // padreAux: variable para poder balancear a n (si es necesario)
         boolean flag = true;
 
         if (n != null){
@@ -125,9 +126,9 @@ public class Diccionario {
                 }
 
             } else if (elem.compareTo(aux) < 0) { //si es menor busco a la izq
-                flag = eliminarAux(n.getIzquierdo(), elem, n);
+                flag = eliminarAux(izq, elem, n);
             } else { //si es mayor busco a la der
-                flag = eliminarAux(n.getDerecho(), elem, n);  
+                flag = eliminarAux(der, elem, n);  
             }
 
             if (flag){ //si se logro eliminar verifico balance de nodo actual
@@ -367,11 +368,20 @@ public class Diccionario {
     }
 
     public Lista listarDatos(){
-        //devuelve una lista ordenada con la info de los elementos del arbol
+        //devuelve una lista ordenada con la info asociada a cada clave
         Lista ls = new Lista();
         listarDatosAux(this.raiz, ls);
         return ls;
         
+    }
+
+    private void listarDatosAux(NodoAVLDicc n, Lista ls){
+        //Lista los datos del arbol en orden. Recorre el arbol en inorden inverso para insertar en pos 1
+        if (n != null){
+            listarDatosAux(n.getDerecho(), ls);
+            ls.insertar(n.getDato(), 1);
+            listarDatosAux(n.getIzquierdo(), ls);
+        }
     }
 
     public Lista listarPorRango(Comparable min, Comparable max) {
@@ -415,15 +425,6 @@ public class Diccionario {
                 listarPorRangoAux(izq, ls, min, max);
             }
             
-        }
-    }
-
-    private void listarDatosAux(NodoAVLDicc n, Lista ls){
-        //Lista los datos del arbol en orden. Recorre el arbol en inorden inverso para insertar en pos 1
-        if (n != null){
-            listarDatosAux(n.getDerecho(), ls);
-            ls.insertar(n.getDato(), 1);
-            listarDatosAux(n.getIzquierdo(), ls);
         }
     }
 
